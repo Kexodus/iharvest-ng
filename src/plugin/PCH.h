@@ -1,6 +1,6 @@
 #pragma once
 
-// Precompiled header for iHarvestNG.dll. SKSE/Impl/PCH.h must come first.
+// Precompiled header for IHarvestNG.dll. SKSE/Impl/PCH.h must come first.
 #include <SKSE/Impl/PCH.h>
 
 #include <RE/Skyrim.h>

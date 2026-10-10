@@ -2,10 +2,10 @@
 
 namespace ihng
 {
-	// Records from iHarvestNG.esp (ESL-flagged). Resolved once at kDataLoaded.
+	// Records from IHarvestNG.esp (ESL-flagged). Resolved once at kDataLoaded.
 	struct Forms
 	{
-		static constexpr std::array kPluginNames{ "iHarvestNG.esp"sv, "iHarvestNG.esl"sv };
+		static constexpr std::array kPluginNames{ "IHarvestNG.esp"sv, "IHarvestNG.esl"sv };
 
 		RE::EffectSetting*   harvestEffect{ nullptr };       // concentration spell effect
 		RE::EffectSetting*   harvestStaffEffect{ nullptr };  // staff ability (toggled) effect

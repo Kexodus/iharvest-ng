@@ -36,12 +36,12 @@ namespace ihng
 		void Clamp() noexcept;
 	};
 
-	// Data/SKSE/Plugins/iHarvestNG.ini. Thread-safe: the game loop reads snapshots, the Menu
+	// Data/SKSE/Plugins/IHarvestNG.ini. Thread-safe: the game loop reads snapshots, the Menu
 	// Framework page (render thread) edits and saves.
 	class Settings
 	{
 	public:
-		static constexpr auto kPath = "Data/SKSE/Plugins/iHarvestNG.ini"sv;
+		static constexpr auto kPath = "Data/SKSE/Plugins/IHarvestNG.ini"sv;
 
 		[[nodiscard]] static Settings& GetSingleton() noexcept;
 

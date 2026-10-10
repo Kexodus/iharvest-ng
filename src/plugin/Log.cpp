@@ -15,7 +15,7 @@ namespace ihng::log
 			std::make_shared<spdlog::sinks::msvc_sink_mt>()
 		};
 
-		auto logger = std::make_shared<spdlog::logger>("iHarvestNG", sinks.begin(), sinks.end());
+		auto logger = std::make_shared<spdlog::logger>("IHarvestNG", sinks.begin(), sinks.end());
 		logger->set_level(spdlog::level::info);
 		logger->flush_on(spdlog::level::info);
 		logger->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%l] %v");

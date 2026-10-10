@@ -1,4 +1,4 @@
-# iHarvest NG: Nexus page, copy/paste ready
+# IHarvest NG: Nexus page, copy/paste ready
 
 Every grey box below has a **copy button** (top-right corner of the box). Paste each one into the
 matching field on Nexus → *Add a mod*. Click an image to open it full size, then right-click → *Save image as*
@@ -37,7 +37,7 @@ to upload it.
 
 ## 2. Mod name
 ```text
-iHarvest NG
+IHarvest NG
 ```
 
 ## 3. Version
@@ -75,7 +75,7 @@ The IHarvest you know, rebuilt from scratch as a native SKSE plugin. No scripts,
 
 [center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/section_features-nordic.png[/img][/center]
 
-[b]iHarvest NG[/b] is a complete native reimplementation of [url=https://www.nexusmods.com/skyrimspecialedition/mods/27789]IHarvest[/url] by IDontEvenKnow. The original relied on about 3,800 lines of Papyrus: 8 quests, Story Manager searches, and actor "critters" walking on AI packages. All of it is now C++ running inside the game loop.
+[b]IHarvest NG[/b] is a complete native reimplementation of [url=https://www.nexusmods.com/skyrimspecialedition/mods/27789]IHarvest[/url] by IDontEvenKnow. The original relied on about 3,800 lines of Papyrus: 8 quests, Story Manager searches, and actor "critters" walking on AI packages. All of it is now C++ running inside the game loop.
 
 [list]
 [*][b]Plays the same.[/b] Same spell, spell tomes in the same 18 hand-placed spots, the same Staff of Harvest, the same skill scaling, and the same magicka-per-wisp economy.
@@ -130,17 +130,17 @@ Not required: SkyUI, PapyrusUtil, SkyPal, USSEP, or any patch.
 
 [center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/section_installation-nordic.png[/img][/center]
 
-[b]New install:[/b] install with your mod manager and enable [b]iHarvestNG.esp[/b]. Load order doesn't matter.
+[b]New install:[/b] install with your mod manager and enable [b]IHarvestNG.esp[/b]. Load order doesn't matter.
 
 [b]Coming from the original IHarvest:[/b] the two must not run together.
 [list=1]
 [*]In IHarvest's MCM, click [i]Reset Mod[/i].
 [*]Save, then disable and remove IHarvest.
 [*]Load that save and save again (a clean save).
-[*]Install iHarvest NG.
+[*]Install IHarvest NG.
 [/list]
 
-[b]Updating iHarvest NG:[/b] just overwrite. It's safe mid-playthrough.
+[b]Updating IHarvest NG:[/b] just overwrite. It's safe mid-playthrough.
 
 [b]Uninstalling:[/b]
 [list=1]
@@ -150,7 +150,7 @@ Not required: SkyUI, PapyrusUtil, SkyPal, USSEP, or any patch.
 
 [center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/section_settings-nordic.png[/img][/center]
 
-Open [b]SKSE Menu Framework[/b] and go to [b]iHarvest NG[/b]. Changes apply live and are saved when the menu closes.
+Open [b]SKSE Menu Framework[/b] and go to [b]IHarvest NG[/b]. Changes apply live and are saved when the menu closes.
 [list]
 [*][b]Status & Maintenance:[/b] wisps in flight, things harvested, [i]Recall all wisps[/i], [i]Reset[/i], and a testing section that adds the spell or staff.
 [*][b]Settings:[/b]
@@ -167,7 +167,7 @@ Open [b]SKSE Menu Framework[/b] and go to [b]iHarvest NG[/b]. Changes apply live
 [*]Sounds
 [/list]
 [/list]
-No Menu Framework? Every option is in [i]Data/SKSE/Plugins/iHarvestNG.ini[/i], with comments.
+No Menu Framework? Every option is in [i]Data/SKSE/Plugins/IHarvestNG.ini[/i], with comments.
 
 [center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/section_compatibility-nordic.png[/img][/center]
 
@@ -194,7 +194,7 @@ Flora that only gives misc items (crafting materials, for example) is skipped by
 Raise [i]Flight speed[/i] (up to 20×), dual cast with the Alteration Dual Casting perk, and level Alteration and Alchemy.
 
 [b]Where's the log?[/b]
-Documents/My Games/Skyrim Special Edition/SKSE/iHarvestNG.log. Set the log level to "debug" under Diagnostics when reporting a bug.
+Documents/My Games/Skyrim Special Edition/SKSE/IHarvestNG.log. Set the log level to "debug" under Diagnostics when reporting a bug.
 [/spoiler]
 
 [center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/section_credits-nordic.png[/img][/center]
@@ -207,18 +207,18 @@ Documents/My Games/Skyrim Special Edition/SKSE/iHarvestNG.log. Set the log level
 [*]The [b]SKSE Menu Framework[/b] team.
 [/list]
 
-[b]Source code:[/b] [url=https://github.com/Kexodus/iharvest-ng]github.com/Kexodus/iharvest-ng[/url]. iHarvest NG's code is GPL-3.0, and the reused original IHarvest assets are WTFPL. Bug reports and pull requests are welcome.
+[b]Source code:[/b] [url=https://github.com/Kexodus/iharvest-ng]github.com/Kexodus/iharvest-ng[/url]. IHarvest NG's code is GPL-3.0, and the reused original IHarvest assets are WTFPL. Bug reports and pull requests are welcome.
 ```
 
 ---
 
 ## 8. Files tab: main file
 
-**Upload:** [iHarvestNG-1.0.3.zip](https://github.com/Kexodus/iharvest-ng/releases/download/v1.0.3/iHarvestNG-1.0.3.zip). Category: *Main Files*.
+**Upload:** [IHarvestNG-1.0.3.zip](https://github.com/Kexodus/iharvest-ng/releases/download/v1.0.3/IHarvestNG-1.0.3.zip). Category: *Main Files*.
 
 File name:
 ```text
-iHarvest NG
+IHarvest NG
 ```
 File version:
 ```text
@@ -226,7 +226,7 @@ File version:
 ```
 File description:
 ```text
-Skyrim SE 1.5.97 / AE 1.6.x / VR. Install with a mod manager and enable iHarvestNG.esp. Requires SKSE + Address Library. Do not use together with the original IHarvest.
+Skyrim SE 1.5.97 / AE 1.6.x / VR. Install with a mod manager and enable IHarvestNG.esp. Requires SKSE + Address Library. Do not use together with the original IHarvest.
 ```
 
 ## 9. Requirements tab

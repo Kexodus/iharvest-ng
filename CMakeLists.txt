@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.25)
 
 project(
-	iHarvestNG
+	IHarvestNG
 	VERSION 1.0.3
 	DESCRIPTION "Native SKSE reimplementation of IHarvest: a spell that sends wisps to harvest everything around you"
 	LANGUAGES CXX

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""nexus_art.py - render the Nexus page art for iHarvest NG in a minimal, Nordic-UI style.
+"""nexus_art.py - render the Nexus page art for IHarvest NG in a minimal, Nordic-UI style.
 
 Flat near-black panels, 1 px bone-white rules, notched frames, diamond ornaments and widely tracked
 uppercase type. Everything is drawn at 2x and downsampled for clean thin lines.

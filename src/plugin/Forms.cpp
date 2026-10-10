@@ -33,7 +33,7 @@ namespace ihng
 			}
 		}
 		if (pluginName.empty()) {
-			logger::critical("Forms: iHarvestNG.esp is not active. The spell, staff and tomes will not exist; "
+			logger::critical("Forms: IHarvestNG.esp is not active. The spell, staff and tomes will not exist; "
 							 "enable the plugin in your load order.");
 			_ready = false;
 			return false;

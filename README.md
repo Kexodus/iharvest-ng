@@ -1,4 +1,4 @@
-# iHarvest NG
+# IHarvest NG
 
 A native SKSE reimplementation of **[IHarvest](https://www.nexusmods.com/skyrimspecialedition/mods/27789)**
 by IDontEvenKnow. Cast *Harvest* (or wield the *Staff of Harvest*) and little wisps fly out, pick every
@@ -12,7 +12,7 @@ C++ running inside the game loop.
 
 ## Why NG
 
-| | IHarvest (original) | iHarvest NG |
+| | IHarvest (original) | IHarvest NG |
 |---|---|---|
 | Logic | Papyrus: 8 quests, Story Manager / quest-start searches, 8 finder threads, latent waits | Native C++ in the main loop. No scripts at all |
 | Wisps | Pooled **actors** with AI travel packages, plus 64 pathing markers and aliases | Lightweight collision-less refs, moved natively every frame along curved flight paths |
@@ -20,7 +20,7 @@ C++ running inside the game loop.
 | Save footprint | Persistent critter actors, quests, form lists, and a risk of stuck threads (`PathToReference`) | No quests, actors or scripts. Wisps saved mid-flight are deleted again on load |
 | Harvesting | The critter activates the target, so vanilla scripts needed patching ("Vanilla Fixes") and Hearthfire needed USSEP | Harvests *as the caster* through the game's own activation. Green Thumb, harvest sounds, critter / nirnroot / Hearthfire scripts and quest hooks just work, with no patches |
 | Conflicts | Full copies of 4 worldspaces and 19 vanilla cells (world map / lighting conflicts in big load orders) | **Zero** vanilla records overridden. Tomes and staves are placed at runtime |
-| VR | "Seems to work", after renaming `.esl` to `.esp` by hand | Same DLL. Every engine address it uses is verified against the VR Address Library. `iHarvestNG.esp` is ESL-flagged: light on SE/AE, a normal plugin on VR |
+| VR | "Seems to work", after renaming `.esl` to `.esp` by hand | Same DLL. Every engine address it uses is verified against the VR Address Library. `IHarvestNG.esp` is ESL-flagged: light on SE/AE, a normal plugin on VR |
 | Config | SkyUI MCM | SKSE Menu Framework page (applies live), plus a plain INI |
 
 ## Gameplay
@@ -67,7 +67,7 @@ The core gameplay is identical to the original:
 ## Install
 
 1. Install the archive with your mod manager.
-2. Enable `iHarvestNG.esp`.
+2. Enable `IHarvestNG.esp`.
 
 Do **not** run it alongside the original IHarvest, or both will hand out a Harvest spell. To switch over:
 
@@ -77,15 +77,15 @@ Do **not** run it alongside the original IHarvest, or both will hand out a Harve
 
 ## Settings
 
-Open SKSE Menu Framework, then **iHarvest NG**:
+Open SKSE Menu Framework, then **IHarvest NG**:
 
 * **Status & Maintenance** shows live wisp and harvest counts, with *Recall all wisps* and *Reset*.
   A testing section can add the spell or the staff. A *Diagnostics* section shows timings and the log level.
 * **Settings** holds every option. Changes apply live and are saved when the menu closes.
 
-Without Menu Framework, edit `Data/SKSE/Plugins/iHarvestNG.ini`, which is documented inline.
+Without Menu Framework, edit `Data/SKSE/Plugins/IHarvestNG.ini`, which is documented inline.
 
-Log: `Documents/My Games/Skyrim Special Edition/SKSE/iHarvestNG.log`.
+Log: `Documents/My Games/Skyrim Special Edition/SKSE/IHarvestNG.log`.
 
 ## Building
 
@@ -101,20 +101,20 @@ python -I tools/package.py   # release zip in release/
 * `src/core` holds the engine-independent cast-timing and wisp-flight logic. It is unit-tested in
   `tests/` (Catch2).
 * `src/plugin` is the SKSE plugin (CommonLibSSE-NG, multi-runtime).
-* `tools/build_plugin.py` regenerates `dist/Data/iHarvestNG.esp` from the original `IHarvest.esl`.
+* `tools/build_plugin.py` regenerates `dist/Data/IHarvestNG.esp` from the original `IHarvest.esl`.
   It keeps the spell, tome, staff and sound records, strips every script, and adds the wisp activators.
   Run it with `python -I tools/build_plugin.py path/to/IHarvest.esl`.
 * Optional: set `IHNG_DEPLOY_DIR` (environment variable or `-DIHNG_DEPLOY_DIR=...`) to a mod folder,
-  such as your MO2 `mods/iHarvest NG`, and every build is copied there.
+  such as your MO2 `mods/IHarvest NG`, and every build is copied there.
 
 ## Credits & license
 
 * **IHarvest** (the original mod: scripts, plugin, sounds) is © IDontEvenKnow, released under the
   [WTFPL](http://www.wtfpl.net/) ([`LICENSE-IHarvest-WTFPL.txt`](LICENSE-IHarvest-WTFPL.txt)). Its
-  meshes and textures are rehashed Bethesda assets. iHarvest NG reuses its records, meshes, textures and
+  meshes and textures are rehashed Bethesda assets. IHarvest NG reuses its records, meshes, textures and
   sounds under that license, and is renamed as the license asks. All credit for the gameplay design
   goes to IDontEvenKnow.
-* **iHarvest NG** code is licensed under the **GNU GPL v3** ([`LICENSE`](LICENSE)), because it links
+* **IHarvest NG** code is licensed under the **GNU GPL v3** ([`LICENSE`](LICENSE)), because it links
   [CommonLibSSE-NG](https://github.com/alandtse/CommonLibVR) (GPL-3.0 with modding exceptions).
 * The [SKSE Menu Framework](https://github.com/QTR-Modding/SKSE-Menu-Framework-3-API) API header is
   LGPL-2.1.

@@ -1,9 +1,9 @@
 # Post-build deploy, run as: cmake -DDLL=... -DPDB=... -DDIST_DIR=... -DDEPLOY_DIR=... -P Deploy.cmake
 #
 # Layout produced under DEPLOY_DIR (a mod folder that maps onto Skyrim's Data/):
-#   SKSE/Plugins/iHarvestNG.dll, .pdb
+#   SKSE/Plugins/IHarvestNG.dll, .pdb
 #   everything in dist/Data (plugin, meshes, textures, sounds, default INI) - except that an existing
-#   SKSE/Plugins/iHarvestNG.ini is never overwritten (user settings).
+#   SKSE/Plugins/IHarvestNG.ini is never overwritten (user settings).
 
 foreach(_var DLL DEPLOY_DIR DIST_DIR)
 	if(NOT DEFINED ${_var} OR "${${_var}}" STREQUAL "")
@@ -14,7 +14,7 @@ endforeach()
 set(_plugins "${DEPLOY_DIR}/SKSE/Plugins")
 file(MAKE_DIRECTORY "${_plugins}")
 
-set(_ini "${_plugins}/iHarvestNG.ini")
+set(_ini "${_plugins}/IHarvestNG.ini")
 set(_keep_ini FALSE)
 if(EXISTS "${_ini}")
 	file(READ "${_ini}" _user_ini)

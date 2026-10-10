@@ -1,4 +1,4 @@
-# iHarvestNG.dll - the SKSE plugin (SE 1.5.97 + AE 1.6.x + VR in one DLL via CommonLibSSE-NG).
+# IHarvestNG.dll - the SKSE plugin (SE 1.5.97 + AE 1.6.x + VR in one DLL via CommonLibSSE-NG).
 # Only this layer may touch RE::/SKSE::.
 
 set(IHNG_COMMONLIB_DIR "${PROJECT_SOURCE_DIR}/extern/CommonLibSSE-NG")
@@ -56,51 +56,51 @@ set(IHNG_PLUGIN_SOURCES
 list(TRANSFORM IHNG_PLUGIN_SOURCES PREPEND "${CMAKE_CURRENT_SOURCE_DIR}/")
 
 # Generates SKSEPluginInfo exporting both SKSEPlugin_Version (AE) and SKSEPlugin_Query (SE/VR).
-add_commonlibsse_plugin(iHarvestNG
-	NAME "iHarvestNG"
-	AUTHOR "iHarvest NG contributors"
+add_commonlibsse_plugin(IHarvestNG
+	NAME "IHarvestNG"
+	AUTHOR "IHarvest NG contributors"
 	VERSION "${PROJECT_VERSION}"
 	USE_ADDRESS_LIBRARY
 	SOURCES ${IHNG_PLUGIN_SOURCES}
 )
 
-target_compile_features(iHarvestNG PRIVATE cxx_std_23)
-target_include_directories(iHarvestNG
+target_compile_features(IHarvestNG PRIVATE cxx_std_23)
+target_include_directories(IHarvestNG
 	PRIVATE
 		"${CMAKE_CURRENT_SOURCE_DIR}"
 		"${CMAKE_CURRENT_BINARY_DIR}/generated"
 )
-target_include_directories(iHarvestNG SYSTEM
+target_include_directories(IHarvestNG SYSTEM
 	PRIVATE
 		"${PROJECT_SOURCE_DIR}/extern/SKSEMenuFramework"
 		"${SIMPLEINI_INCLUDE_DIRS}"
 )
-target_link_libraries(iHarvestNG PRIVATE spdlog::spdlog ihng::core)
-target_precompile_headers(iHarvestNG PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/PCH.h")
+target_link_libraries(IHarvestNG PRIVATE spdlog::spdlog ihng::core)
+target_precompile_headers(IHarvestNG PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/PCH.h")
 
 configure_file(
 	"${CMAKE_CURRENT_SOURCE_DIR}/Version.h.in"
-	"${CMAKE_CURRENT_BINARY_DIR}/generated/iHarvestNG/Version.h"
+	"${CMAKE_CURRENT_BINARY_DIR}/generated/IHarvestNG/Version.h"
 	@ONLY
 )
 
 if(MSVC)
-	target_compile_options(iHarvestNG PRIVATE
+	target_compile_options(IHarvestNG PRIVATE
 		/W4 /permissive- /utf-8 /Zc:__cplusplus /Zc:preprocessor /external:W0 /MP
 		/Zi
 		"$<$<NOT:$<CONFIG:Debug>>:/Zc:inline;/Gy;/Gw>"
 	)
-	target_link_options(iHarvestNG PRIVATE
+	target_link_options(IHarvestNG PRIVATE
 		/DEBUG:FULL
 		"$<$<NOT:$<CONFIG:Debug>>:/OPT:REF;/OPT:ICF;/INCREMENTAL:NO>"
 	)
-	target_compile_definitions(iHarvestNG PRIVATE WIN32_LEAN_AND_MEAN NOMINMAX)
+	target_compile_definitions(IHarvestNG PRIVATE WIN32_LEAN_AND_MEAN NOMINMAX)
 endif()
 
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${IHNG_PLUGIN_SOURCES})
 
 # ---- Deploy into a mod folder (optional) -------------------------------------------------------
-# Set IHNG_DEPLOY_DIR (cache variable or environment variable) to e.g. your MO2 "mods/iHarvest NG"
+# Set IHNG_DEPLOY_DIR (cache variable or environment variable) to e.g. your MO2 "mods/IHarvest NG"
 # folder to have every build copied there. Empty = no deploy.
 set(IHNG_DEPLOY_DIR "$ENV{IHNG_DEPLOY_DIR}"
 	CACHE PATH "Mod root to deploy into (the folder that maps onto Skyrim's Data/); empty disables deploy")
@@ -113,24 +113,24 @@ option(IHNG_DEPLOY "Copy the DLL/PDB and dist/Data into IHNG_DEPLOY_DIR after bu
 
 set(_ihng_deploy_cmd
 	"${CMAKE_COMMAND}"
-	"-DDLL=$<TARGET_FILE:iHarvestNG>"
-	"-DPDB=$<TARGET_PDB_FILE:iHarvestNG>"
+	"-DDLL=$<TARGET_FILE:IHarvestNG>"
+	"-DPDB=$<TARGET_PDB_FILE:IHarvestNG>"
 	"-DDIST_DIR=${PROJECT_SOURCE_DIR}/dist/Data"
 	"-DDEPLOY_DIR=${IHNG_DEPLOY_DIR}"
 	-P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Deploy.cmake"
 )
 
 if(IHNG_DEPLOY)
-	add_custom_command(TARGET iHarvestNG POST_BUILD
+	add_custom_command(TARGET IHarvestNG POST_BUILD
 		COMMAND ${_ihng_deploy_cmd}
-		COMMENT "Deploying iHarvestNG to ${IHNG_DEPLOY_DIR}"
+		COMMENT "Deploying IHarvestNG to ${IHNG_DEPLOY_DIR}"
 		VERBATIM
 	)
 endif()
 
-add_custom_target(iHarvestNG_deploy
+add_custom_target(IHarvestNG_deploy
 	COMMAND ${_ihng_deploy_cmd}
-	DEPENDS iHarvestNG
-	COMMENT "Deploying iHarvestNG to ${IHNG_DEPLOY_DIR}"
+	DEPENDS IHarvestNG
+	COMMENT "Deploying IHarvestNG to ${IHNG_DEPLOY_DIR}"
 	VERBATIM
 )

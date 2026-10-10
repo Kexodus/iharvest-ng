@@ -20,7 +20,7 @@
 
 ## 1.0.1 (2026-10-10)
 
-- **Fix: conflicts with world map, lighting and worldspace mods.** iHarvestNG.esp no longer overrides
+- **Fix: conflicts with world map, lighting and worldspace mods.** IHarvestNG.esp no longer overrides
   any vanilla cell or worldspace record. 1.0.0 inherited full copies of the Tamriel, Solstheim, Soul
   Cairn and Deepwood Redoubt worldspace records and 19 vanilla cells from the original IHarvest, only
   to hold the placed tomes and staves. Loaded late, those copies could revert other mods' changes,
@@ -39,7 +39,7 @@ First release.
   keeps the same spell, staff, tome placements, skill-scaled timing and radius, and magicka/charge
   per wisp.
 - **One DLL** for Skyrim SE 1.5.97, AE 1.6.x (including 1.6.1130+) and VR.
-- **Data-only plugin:** `iHarvestNG.esp` is ESL-flagged, contains no scripts and no quests, and is
+- **Data-only plugin:** `IHarvestNG.esp` is ESL-flagged, contains no scripts and no quests, and is
   built from the original's records.
 - **Harvests as the caster:** Green Thumb, Hearthfire planters, critters, nirnroot and modded
   harvestables work without the original's Vanilla Fixes patch.

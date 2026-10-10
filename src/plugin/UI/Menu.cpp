@@ -4,7 +4,7 @@
 #include "Manager.h"
 #include "Settings.h"
 
-#include <iHarvestNG/Version.h>
+#include <IHarvestNG/Version.h>
 
 // The vendored header expects <filesystem> first and pulls in <windows.h>; keep it to this TU.
 #include <filesystem>
@@ -108,7 +108,7 @@ namespace ihng::ui
 		void __stdcall RenderStatus()
 		{
 			const auto s = Manager::GetSingleton().GetStats();
-			ImGui::Text("%s %s - %s", version::kName.data(), version::kString.data(), Forms::IsReady() ? "ready" : "PLUGIN NOT ACTIVE (enable iHarvestNG.esp)");
+			ImGui::Text("%s %s - %s", version::kName.data(), version::kString.data(), Forms::IsReady() ? "ready" : "PLUGIN NOT ACTIVE (enable IHarvestNG.esp)");
 			ImGui::Separator();
 			ImGui::Text("Wisps in flight: %u", s.activeWisps);
 			ImGui::Text("Casters harvesting: %u", s.activeCasters);
@@ -128,7 +128,7 @@ namespace ihng::ui
 					static const char* levels[] = { "trace", "debug", "info", "warn", "error", "critical", "off" };
 					int lvl = c.logLevel;
 					const bool ch = ImGui::Combo("Log level", &lvl, levels, 7);
-					Tooltip("Written to Documents/My Games/Skyrim Special Edition/SKSE/iHarvestNG.log");
+					Tooltip("Written to Documents/My Games/Skyrim Special Edition/SKSE/IHarvestNG.log");
 					c.logLevel = lvl;
 					return ch;
 				});
@@ -163,7 +163,7 @@ namespace ihng::ui
 			logger::info("UI: SKSE Menu Framework not installed; configure via {}", Settings::kPath);
 			return;
 		}
-		SKSEMenuFramework::SetSection("iHarvest NG");
+		SKSEMenuFramework::SetSection("IHarvest NG");
 		SKSEMenuFramework::AddSectionItem("Status & Maintenance", RenderStatus);
 		SKSEMenuFramework::AddSectionItem("Settings", RenderSettings);
 		static auto* event = SKSEMenuFramework::AddEvent(OnMenuEvent, 0.0f);

@@ -5,7 +5,7 @@ namespace ihng::placements
 	// One of the original's hand-placed Spell Tomes / Staves of Harvest (see Placements.inl).
 	struct Def
 	{
-		RE::FormID       base;        // local id in iHarvestNG.esp
+		RE::FormID       base;        // local id in IHarvestNG.esp
 		std::string_view cellFile;
 		RE::FormID       cellLocal;
 		std::string_view worldFile;   // empty for interiors

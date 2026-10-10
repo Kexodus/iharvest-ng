@@ -30,7 +30,7 @@ namespace ihng::hooks
 	{
 		const auto site = CallSite();
 		if (*reinterpret_cast<const std::uint8_t*>(site) != 0xE8) {
-			logger::critical("Hooks: Main::Update call site at {:#x} is not a CALL (runtime {}); iHarvest NG disabled",
+			logger::critical("Hooks: Main::Update call site at {:#x} is not a CALL (runtime {}); IHarvest NG disabled",
 				site, REL::Module::get().version().string());
 			return false;
 		}
