@@ -42,7 +42,7 @@ IHarvest NG
 
 ## 3. Version
 ```text
-1.0.3
+1.0.4
 ```
 
 ## 4. Category
@@ -214,7 +214,7 @@ Documents/My Games/Skyrim Special Edition/SKSE/IHarvestNG.log. Set the log level
 
 ## 8. Files tab: main file
 
-**Upload:** [IHarvestNG-1.0.3.zip](https://github.com/Kexodus/iharvest-ng/releases/download/v1.0.3/IHarvestNG-1.0.3.zip). Category: *Main Files*.
+**Upload:** [IHarvest.NG.zip](https://github.com/Kexodus/iharvest-ng/releases/download/v1.0.4/IHarvest.NG.zip) (GitHub shows the space as a dot; rename it to `IHarvest NG.zip` if you like). Category: *Main Files*.
 
 File name:
 ```text
@@ -222,7 +222,7 @@ IHarvest NG
 ```
 File version:
 ```text
-1.0.3
+1.0.4
 ```
 File description:
 ```text
@@ -239,6 +239,10 @@ Add these as requirements (search by name or ID):
 | SKSE Menu Framework | 120352 | `Optional - in-game settings page (INI otherwise)` |
 
 ## 10. Changelog tab
+Version `1.0.4`:
+```text
+Fixed Spell Tomes / Staves of Harvest never appearing: all 22 placements were rejected at startup. Existing saves get every tome and staff the next time you enter its cell.
+```
 Version `1.0.3`:
 ```text
 Fixed Respect ownership skipping items the game lets you take without stealing (e.g. in the Blue Palace as its steward).

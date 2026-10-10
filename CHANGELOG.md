@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.4 (2026-10-10)
+
+- **Fix: Spell Tomes and Staves of Harvest never appeared (1.0.1 to 1.0.3).** The placement table
+  looked its forms up with a typed lookup that only matches an exact record type, so all 22 placements
+  were rejected at startup (the log said `Placements: 0/22 ... resolved`). They now resolve, and
+  existing saves get every tome and staff the next time you enter its cell.
+- The release archive is now always named `IHarvest NG.zip`, so a manual install in MO2 offers to
+  replace the existing mod.
+
 ## 1.0.3 (2026-10-10)
 
 - **Fix: Respect ownership skipped things you're allowed to take.** Items the game lets you *take*

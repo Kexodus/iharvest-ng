@@ -16,7 +16,10 @@ namespace ihng::placements
 			if (a_file.empty()) {
 				return nullptr;
 			}
-			return RE::TESDataHandler::GetSingleton()->LookupForm<T>(a_local, a_file);
+			// Untyped lookup + As<T>(): the typed LookupForm<T> only accepts an exact T::FORMTYPE, which
+			// silently rejects every form for base classes like TESBoundObject / TESForm (1.0.1-1.0.2 bug).
+			auto* form = RE::TESDataHandler::GetSingleton()->LookupForm(a_local, a_file);
+			return form ? form->As<T>() : nullptr;
 		}
 	}
 

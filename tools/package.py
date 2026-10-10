@@ -3,7 +3,8 @@
 
     python -I tools/package.py [--build build/plugin] [--out release]
 
-Produces release/IHarvestNG-<version>.zip with Data/ contents at the archive root:
+Produces "release/IHarvest NG.zip" (fixed name, so MO2 offers Merge/Replace onto the existing
+"IHarvest NG" mod instead of installing a second copy) with Data/ contents at the archive root:
 IHarvestNG.esp, SKSE/Plugins/IHarvestNG.dll + .ini, meshes/, textures/, sound/.
 """
 
@@ -39,7 +40,7 @@ def main() -> int:
 
 	version = project_version()
 	args.out.mkdir(parents=True, exist_ok=True)
-	archive = args.out / f"IHarvestNG-{version}.zip"
+	archive = args.out / "IHarvest NG.zip"  # version lives in the DLL / CHANGELOG, not the file name
 	with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as z:
 		for path in sorted(dist.rglob("*")):
 			if path.is_file():
