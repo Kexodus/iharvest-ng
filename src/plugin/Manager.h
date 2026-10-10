@@ -116,6 +116,7 @@ namespace ihng
 		std::uint32_t       _configRevision{ 0 };
 		harvest::Rules      _rules;
 		double              _clock{ 0.0 };  // seconds of unpaused game time since load
+		double              _nextPlacementPoll{ 0.0 };
 		std::mt19937        _rng{ std::random_device{}() };
 
 		mutable std::mutex _statsLock;

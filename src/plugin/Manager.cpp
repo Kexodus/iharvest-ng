@@ -137,6 +137,12 @@ namespace ihng
 		if (!_pendingKeyframe.empty()) {
 			UpdatePendingKeyframes(dt);
 		}
+		// Backstop for TESCellFullyLoadedEvent, which doesn't fire for every cell attach (e.g. cells
+		// still in the cell buffer). 22 IsAttached() checks once a second.
+		if (_placed.size() < placements::All().size() && _clock >= _nextPlacementPoll) {
+			_nextPlacementPoll = _clock + 1.0;
+			PlaceInAttachedCells();
+		}
 
 		if (!_ignoredUntil.empty()) {
 			std::erase_if(_ignoredUntil, [this](const auto& kv) { return kv.second <= _clock; });
@@ -501,7 +507,7 @@ namespace ihng
 				std::uniform_real_distribution<float> roll(0.0f, 1.0f);
 				if (roll(_rng) < _config.readTomeDespawnChance) {
 					a_ref->Disable();
-					logger::debug("Spell tome {:08X} despawned (spell already known)", a_ref->GetFormID());
+					logger::info("Spell tome {:08X} despawned (spell already known)", a_ref->GetFormID());
 				}
 			}
 			return;
@@ -666,6 +672,7 @@ namespace ihng
 		_pendingKeyframe.clear();
 		_deleteOnNextUpdate.clear();
 		_clock = 0.0;
+		_nextPlacementPoll = 0.0;
 		std::scoped_lock l(_statsLock);
 		_stats.totalSent = 0;
 		_stats.totalHarvested = 0;
@@ -673,6 +680,7 @@ namespace ihng
 
 	void Manager::OnPostLoad()
 	{
+		logger::info("Placements: {}/{} already placed in this save", _placed.size(), placements::All().size());
 		PlaceInAttachedCells();
 
 		// The staff's harvesting ability should never outlive the staff (e.g. a save made mid-toggle

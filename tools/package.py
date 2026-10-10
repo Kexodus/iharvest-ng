@@ -45,10 +45,8 @@ def main() -> int:
 			if path.is_file():
 				z.write(path, path.relative_to(dist).as_posix())
 		z.write(dll, "SKSE/Plugins/iHarvestNG.dll")
-		z.write(ROOT / "README.md", "iHarvestNG-README.md")
-		z.write(ROOT / "LICENSE", "iHarvestNG-LICENSE-GPL3.txt")
-		z.write(ROOT / "LICENSE-IHarvest-WTFPL.txt", "iHarvestNG-LICENSE-IHarvest-WTFPL.txt")
-		z.write(ROOT / "CHANGELOG.md", "iHarvestNG-CHANGELOG.md")
+		# GPL-3.0 wants the license text shipped with the DLL; keep it next to it, out of the archive root.
+		z.write(ROOT / "LICENSE", "SKSE/Plugins/iHarvestNG-LICENSE.txt")
 	with zipfile.ZipFile(archive) as z:
 		for info in z.infolist():
 			print(f"{info.file_size:>10}  {info.filename}")

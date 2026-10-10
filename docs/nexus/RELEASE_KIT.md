@@ -201,6 +201,7 @@ Documents/My Games/Skyrim Special Edition/SKSE/iHarvestNG.log. Set the log level
 
 [list]
 [*][b]IDontEvenKnow[/b] made the original [url=https://www.nexusmods.com/skyrimspecialedition/mods/27789]IHarvest[/url]. All the gameplay design, records, wisp meshes and sounds are theirs, released under the WTFPL, and the mod is renamed as that license asks. Please endorse the original too.
+[*][b]vh724[/b] made [url=https://www.nexusmods.com/skyrimspecialedition/mods/177392]iHarvest - Redux[/url], the SkyPal-free rework of IHarvest. Give it an endorsement too.
 [*][b]CommonLibSSE-NG[/b] contributors (alandtse, CharmedBaryon, powerofthree and everyone else).
 [*]The [b]SKSE[/b] team, and [b]meh321[/b] for Address Library.
 [*]The [b]SKSE Menu Framework[/b] team.
@@ -251,6 +252,7 @@ First release.
 Credits (the "Credits" text box):
 ```text
 IDontEvenKnow - the original IHarvest (WTFPL): gameplay design, records, wisp meshes and sounds. Please endorse the original too.
+vh724 - iHarvest - Redux, the SkyPal-free rework of IHarvest.
 CommonLibSSE-NG contributors (alandtse, CharmedBaryon, powerofthree and others).
 SKSE team, meh321 (Address Library), SKSE Menu Framework team.
 ```
