@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.0.2 (2026-10-10)
+
+- **Fix: Spell Tomes and Staves of Harvest missing** in interiors you enter through a load door, such as
+  Blackreach and Anise's Cabin. 1.0.1 placed them only when the game reported a cell as fully loaded,
+  and that report can arrive before the cell is actually in the world. Loaded cells are now also
+  re-checked once a second, so every placement lands. Existing saves pick up any that were missed.
+- The log now records how many placements a save already has, and when a tome vanishes because you
+  already know the spell. That is intended: as in the original, 80% of the remaining tomes disappear
+  once you've learned Harvest. Staves never disappear.
+
 ## 1.0.1 (2026-10-10)
 
 - **Fix: conflicts with world map, lighting and worldspace mods.** iHarvestNG.esp no longer overrides
