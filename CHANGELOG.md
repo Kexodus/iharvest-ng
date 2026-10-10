@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.0.1 (2026-10-10)
+
+- **Fix: conflicts with world map, lighting and worldspace mods.** iHarvestNG.esp no longer overrides
+  any vanilla cell or worldspace record. 1.0.0 inherited full copies of the Tamriel, Solstheim, Soul
+  Cairn and Deepwood Redoubt worldspace records and 19 vanilla cells from the original IHarvest, only
+  to hold the placed tomes and staves. Loaded late, those copies could revert other mods' changes,
+  for example breaking the world map in large load orders.
+- The 18 Spell Tomes and 4 Staves of Harvest are now placed by the DLL the first time their cell
+  loads. They use the same positions and the same owner, and stay where they're put.
+- **Upgrading from 1.0.0 mid-playthrough is safe.** Any tome or staff you already picked up stays in
+  your inventory. Ones you never found reappear at their original spots.
+- The plugin is now 4.6 KB and contains only new records.
+
 ## 1.0.0 (2026-10-10)
 
 First release.

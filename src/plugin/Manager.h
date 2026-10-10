@@ -28,6 +28,7 @@ namespace ihng
 		void OnStaffCast(RE::Actor* a_caster);
 		void OnStaffEquipChanged(RE::Actor* a_actor, bool a_equipped);
 		void OnReferenceAttached(RE::TESObjectREFR* a_ref);
+		void OnCellLoaded(RE::TESObjectCELL* a_cell);  // places pending spell tomes / staves
 		void RecallAll();
 		void ClearCaches();
 		void ResetAll();  // recall + clear + delete orphans
@@ -37,6 +38,8 @@ namespace ihng
 		void OnPostLoad();
 		void SetLoadedRefsToDelete(std::vector<RE::FormID> a_ids);
 		void SetProcessedTomes(std::vector<RE::FormID> a_ids);
+		void SetPlacedIndices(std::vector<std::uint32_t> a_indices);
+		[[nodiscard]] std::vector<std::uint32_t> PlacedIndices() const;
 		void SetTotals(std::uint64_t a_sent, std::uint64_t a_harvested);
 		[[nodiscard]] std::vector<RE::FormID> LiveTempRefIDs() const;
 		[[nodiscard]] std::vector<RE::FormID> ProcessedTomes() const;
@@ -87,6 +90,9 @@ namespace ihng
 		[[nodiscard]] bool  IsClaimedOrIgnored(RE::FormID a_id) const;
 		void                Release(const Wisp& a_wisp);
 		void                DeleteOrphansNow();
+		void                Place(std::size_t a_index);
+		void                PlaceInAttachedCells();
+		void                UpdatePendingKeyframes(float a_dt);
 		void                ApplyConfigChanges();
 
 		// Active effect on a_actor whose base is a_effect (not dispelled, conditions true), or nullptr.
@@ -102,6 +108,8 @@ namespace ihng
 		std::unordered_set<RE::FormID>        _claimed;       // targets a wisp is currently fetching
 		std::unordered_map<RE::FormID, float> _ignoredUntil;  // recently harvested / failed targets
 		std::unordered_set<RE::FormID>        _processedTomes;
+		std::unordered_set<std::uint32_t>     _placed;             // Placements.inl indices already placed in this save
+		std::vector<std::pair<RE::FormID, float>> _pendingKeyframe;  // placed refs waiting for 3D to freeze them
 		std::vector<RE::FormID>               _deleteOnNextUpdate;  // temp refs saved mid-flight
 
 		Config              _config;

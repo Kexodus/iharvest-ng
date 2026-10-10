@@ -19,6 +19,7 @@ C++ running inside the game loop.
 | Finding flora | Story Manager or SkyPal, ~3 s timeouts, "Story Manager under high load" warnings | Direct native scan of the loaded cells. No Papyrus, no quest restarts. The cost is shown live in the status page |
 | Save footprint | Persistent critter actors, quests, form lists, and a risk of stuck threads (`PathToReference`) | Nothing persistent. Wisps saved mid-flight are deleted again on load |
 | Harvesting | The critter activates the target, so vanilla scripts needed patching ("Vanilla Fixes") and Hearthfire needed USSEP | Harvests *as the caster* through the game's own activation. Green Thumb, harvest sounds, critter / nirnroot / Hearthfire scripts and quest hooks just work, with no patches |
+| Conflicts | Full copies of 4 worldspaces and 19 vanilla cells (world map / lighting conflicts in big load orders) | **Zero** vanilla records overridden. Tomes and staves are placed at runtime |
 | VR | "Seems to work", after renaming `.esl` to `.esp` by hand | Same DLL. Every engine address it uses is verified against the VR Address Library. `iHarvestNG.esp` is ESL-flagged: light on SE/AE, a normal plugin on VR |
 | Config | SkyUI MCM | SKSE Menu Framework page (applies live), plus a plain INI |
 

@@ -47,6 +47,9 @@ set(IHNG_PLUGIN_SOURCES
 	Manager.cpp
 	Serialization.h
 	Serialization.cpp
+	Placements.h
+	Placements.cpp
+	Placements.inl
 	UI/Menu.h
 	UI/Menu.cpp
 )

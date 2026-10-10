@@ -2,6 +2,7 @@
 
 #include "Forms.h"
 #include "Log.h"
+#include "Placements.h"
 
 namespace ihng
 {
@@ -133,6 +134,9 @@ namespace ihng
 
 		UpdateSessions(dt);
 		UpdateWisps(dt);
+		if (!_pendingKeyframe.empty()) {
+			UpdatePendingKeyframes(dt);
+		}
 
 		if (!_ignoredUntil.empty()) {
 			std::erase_if(_ignoredUntil, [this](const auto& kv) { return kv.second <= _clock; });
@@ -528,6 +532,70 @@ namespace ihng
 		_deleteOnNextUpdate.clear();
 	}
 
+	void Manager::Place(std::size_t a_index)
+	{
+		const auto& def = placements::All()[a_index];
+		const auto& r = placements::Get(a_index);
+		if (!r.base || !r.cell) {
+			return;
+		}
+		const auto handle = RE::TESDataHandler::GetSingleton()->CreateReferenceAtLocation(
+			r.base, def.pos, def.rot, r.cell, r.world, nullptr, nullptr, RE::ObjectRefHandle(), true, true);
+		const auto ref = handle.get();
+		if (!ref) {
+			logger::warn("Placements: could not place #{} in {:08X}", a_index, r.cell->GetFormID());
+			return;
+		}
+		if (r.owner) {
+			ref->SetOwner(r.owner);
+		}
+		_placed.insert(static_cast<std::uint32_t>(a_index));
+		_pendingKeyframe.emplace_back(ref->GetFormID(), 0.0f);
+		logger::info("Placed {} ({:08X}) in {}", r.base->GetName(), ref->GetFormID(), r.cell->GetFormEditorID());
+	}
+
+	void Manager::OnCellLoaded(RE::TESObjectCELL* a_cell)
+	{
+		if (!a_cell || !a_cell->IsAttached()) {
+			return;  // stale event (e.g. queued just before a save load)
+		}
+		const auto defs = placements::All();
+		for (std::size_t i = 0; i < defs.size(); ++i) {
+			if (placements::Get(i).cell == a_cell && !_placed.contains(static_cast<std::uint32_t>(i))) {
+				Place(i);
+			}
+		}
+	}
+
+	void Manager::PlaceInAttachedCells()
+	{
+		const auto defs = placements::All();
+		for (std::size_t i = 0; i < defs.size(); ++i) {
+			const auto* cell = placements::Get(i).cell;
+			if (cell && cell->IsAttached() && !_placed.contains(static_cast<std::uint32_t>(i))) {
+				Place(i);
+			}
+		}
+	}
+
+	void Manager::UpdatePendingKeyframes(float a_dt)
+	{
+		// Like the original's "Don't Havok Settle" placements: books and staves stay exactly where they
+		// were put (on shelves, tables) instead of tumbling when their 3D first loads.
+		std::erase_if(_pendingKeyframe, [a_dt](auto& entry) {
+			entry.second += a_dt;
+			auto* ref = RE::TESForm::LookupByID<RE::TESObjectREFR>(entry.first);
+			if (!ref || ref->IsDeleted() || entry.second > 15.0f) {
+				return true;
+			}
+			if (!ref->Get3D()) {
+				return false;
+			}
+			ref->SetMotionType(RE::hkpMotion::MotionType::kKeyframed, true);
+			return true;
+		});
+	}
+
 	// ---- Maintenance ------------------------------------------------------------------------------
 
 	void Manager::RecallAll()
@@ -594,6 +662,8 @@ namespace ihng
 		_claimed.clear();
 		_ignoredUntil.clear();
 		_processedTomes.clear();
+		_placed.clear();
+		_pendingKeyframe.clear();
 		_deleteOnNextUpdate.clear();
 		_clock = 0.0;
 		std::scoped_lock l(_statsLock);
@@ -603,6 +673,8 @@ namespace ihng
 
 	void Manager::OnPostLoad()
 	{
+		PlaceInAttachedCells();
+
 		// The staff's harvesting ability should never outlive the staff (e.g. a save made mid-toggle
 		// with the staff later removed by another mod).
 		const auto& forms = Forms::Get();
@@ -620,6 +692,16 @@ namespace ihng
 	void Manager::SetProcessedTomes(std::vector<RE::FormID> a_ids)
 	{
 		_processedTomes = { a_ids.begin(), a_ids.end() };
+	}
+
+	void Manager::SetPlacedIndices(std::vector<std::uint32_t> a_indices)
+	{
+		_placed = { a_indices.begin(), a_indices.end() };
+	}
+
+	std::vector<std::uint32_t> Manager::PlacedIndices() const
+	{
+		return { _placed.begin(), _placed.end() };
 	}
 
 	void Manager::SetTotals(std::uint64_t a_sent, std::uint64_t a_harvested)

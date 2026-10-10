@@ -93,6 +93,20 @@ namespace ihng::events
 				return Control::kContinue;
 			}
 		};
+
+		struct CellLoaded final : RE::BSTEventSink<RE::TESCellFullyLoadedEvent>
+		{
+			Control ProcessEvent(const RE::TESCellFullyLoadedEvent* a_event, RE::BSTEventSource<RE::TESCellFullyLoadedEvent>*) override
+			{
+				if (!a_event || !a_event->cell || !Forms::IsReady()) {
+					return Control::kContinue;
+				}
+				Manager::GetSingleton().QueueTask([id = a_event->cell->GetFormID()] {
+					Manager::GetSingleton().OnCellLoaded(RE::TESForm::LookupByID<RE::TESObjectCELL>(id));
+				});
+				return Control::kContinue;
+			}
+		};
 	}
 
 	void Register()
@@ -106,10 +120,12 @@ namespace ihng::events
 		static SpellCast        spellCast;
 		static Equip            equip;
 		static CellAttach       cellAttach;
+		static CellLoaded       cellLoaded;
 		holder->AddEventSink<RE::TESMagicEffectApplyEvent>(&magicEffectApply);
 		holder->AddEventSink<RE::TESSpellCastEvent>(&spellCast);
 		holder->AddEventSink<RE::TESEquipEvent>(&equip);
 		holder->AddEventSink<RE::TESCellAttachDetachEvent>(&cellAttach);
+		holder->AddEventSink<RE::TESCellFullyLoadedEvent>(&cellLoaded);
 		logger::info("Events: sinks registered");
 	}
 }

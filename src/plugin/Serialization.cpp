@@ -10,6 +10,7 @@ namespace ihng::serialization
 		constexpr std::uint32_t kTempRefs = 'TMPR';
 		constexpr std::uint32_t kTomes = 'TOME';
 		constexpr std::uint32_t kStats = 'STAT';
+		constexpr std::uint32_t kPlaced = 'PLAC';
 		constexpr std::uint32_t kVersion = 1;
 
 		void WriteIDs(SKSE::SerializationInterface* a_intfc, std::uint32_t a_type, const std::vector<RE::FormID>& a_ids)
@@ -46,6 +47,13 @@ namespace ihng::serialization
 			auto& m = Manager::GetSingleton();
 			WriteIDs(a_intfc, kTempRefs, m.LiveTempRefIDs());
 			WriteIDs(a_intfc, kTomes, m.ProcessedTomes());
+			if (a_intfc->OpenRecord(kPlaced, kVersion)) {
+				const auto placed = m.PlacedIndices();
+				a_intfc->WriteRecordData(static_cast<std::uint32_t>(placed.size()));
+				for (const auto i : placed) {
+					a_intfc->WriteRecordData(i);
+				}
+			}
 			if (a_intfc->OpenRecord(kStats, kVersion)) {
 				const auto stats = m.GetStats();
 				a_intfc->WriteRecordData(stats.totalSent);
@@ -70,6 +78,17 @@ namespace ihng::serialization
 					break;
 				case kTomes:
 					m.SetProcessedTomes(ReadIDs(a_intfc));
+					break;
+				case kPlaced:
+					{
+						std::uint32_t n = 0;
+						a_intfc->ReadRecordData(n);
+						std::vector<std::uint32_t> placed(n);
+						for (auto& i : placed) {
+							a_intfc->ReadRecordData(i);
+						}
+						m.SetPlacedIndices(std::move(placed));
+					}
 					break;
 				case kStats:
 					{

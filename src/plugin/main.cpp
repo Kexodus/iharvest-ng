@@ -6,6 +6,7 @@
 #include "Hooks.h"
 #include "Log.h"
 #include "Manager.h"
+#include "Placements.h"
 #include "Serialization.h"
 #include "Settings.h"
 #include "UI/Menu.h"
@@ -36,6 +37,7 @@ namespace
 			break;
 		case SKSE::MessagingInterface::kDataLoaded:
 			if (ihng::Forms::Get().Resolve()) {
+				ihng::placements::Resolve(ihng::Forms::Get().pluginName);
 				ihng::events::Register();
 			}
 			break;
