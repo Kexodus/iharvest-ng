@@ -1,0 +1,27 @@
+{
+	"$schema": "https://raw.githubusercontent.com/microsoft/vcpkg/master/scripts/vcpkg.schema.json",
+	"name": "iharvestng",
+	"version-semver": "1.0.0",
+	"description": "Native SKSE reimplementation of IHarvest",
+	"builtin-baseline": "e456309491fd875487bf02b8a0dca76c1b1b00cc",
+	"dependencies": [],
+	"features": {
+		"tests": {
+			"description": "Engine-independent unit tests",
+			"dependencies": [ "catch2" ]
+		},
+		"plugin": {
+			"description": "SKSE plugin (CommonLibSSE-NG and its dependencies)",
+			"dependencies": [
+				"directxmath",
+				"directxtk",
+				"fmt",
+				"rapidcsv",
+				"simpleini",
+				"spdlog",
+				"toml11",
+				"xbyak"
+			]
+		}
+	}
+}

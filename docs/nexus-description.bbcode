@@ -1,0 +1,76 @@
+[size=5][b]iHarvest NG[/b][/size]
+[i]A native SKSE remake of IHarvest. Same spell, same wisps, same staff, no Papyrus.[/i]
+
+Cast [b]Harvest[/b] (or wield the [b]Staff of Harvest[/b]) and little wisps fly out, pick every ingredient around you, and bring it back.
+
+This is a from-scratch native rewrite of [url=https://www.nexusmods.com/skyrimspecialedition/mods/27789]IHarvest[/url] by IDontEvenKnow. All of the original's ~3,800 lines of Papyrus (8 quests, Story Manager searches, actor "critters" walking on AI packages) are replaced by C++ running in the game loop.
+
+[b]One DLL for SE 1.5.97, AE 1.6.x (including 1.6.1130+), and VR.[/b]
+
+[size=4][b]Why NG[/b][/size]
+[list]
+[*][b]No scripts and no quests.[/b] Nothing to back up the Papyrus VM, no "Story Manager under high load" messages, and no stuck threads in your save.
+[*][b]Lightweight wisps[/b] fly natively along curved paths instead of pathfinding actors.
+[*][b]Harvests as you.[/b] Green Thumb, harvest sounds, Hearthfire planters, critters, nirnroot and quest hooks all just work, with no Vanilla Fixes patch.
+[*][b]Works with modded flora and ingredients[/b] automatically. There is no hard-coded list.
+[*][b]Save-safe.[/b] Wisps saved mid-flight are cleaned up on load, and nothing persists.
+[*][b]VR-ready.[/b] The plugin is an ESL-flagged .esp: light on SE/AE, and a normal plugin on VR with no renaming.
+[/list]
+
+[size=4][b]Gameplay[/b][/size]
+The core gameplay is identical to the original:
+[list]
+[*]Spell Tome: Harvest is hand-placed in the original's 18 locations. Once you know the spell, most of the others quietly vanish.
+[*]Harvest is a free Alteration concentration spell. Each wisp costs 8 Magicka, reduced by Alteration cost reduction.
+[*]The cast speeds up with your Alteration and Alchemy, and so does the search radius (1500 to 4000 units). Dual casting gives 1.5× radius.
+[*]The Staff of Harvest (4 placements, craftable on Solstheim) toggles hands-free harvesting.
+[*]10 Alteration XP per wisp. It never steals unless you allow it.
+[/list]
+
+[b]NG extras:[/b]
+[list]
+[*][b]Alteration Dual Casting[/b] perk: dual casting sends two wisps at a time.
+[*]Flight speed up to 20×, a search radius multiplier, optional arrow/bolt collection, and a mutable wisp hum.
+[/list]
+
+[size=4][b]Requirements[/b][/size]
+[list]
+[*][url=https://www.nexusmods.com/skyrimspecialedition/mods/30379]SKSE[/url] (or SKSEVR)
+[*][url=https://www.nexusmods.com/skyrimspecialedition/mods/32444]Address Library for SKSE Plugins[/url] (or VR Address Library for SKSEVR)
+[*]Optional: [url=https://www.nexusmods.com/skyrimspecialedition/mods/120352]SKSE Menu Framework[/url] for the in-game settings page. Otherwise edit [i]SKSE/Plugins/iHarvestNG.ini[/i].
+[/list]
+
+[size=4][b]Install / Uninstall[/b][/size]
+Install with your mod manager and enable [b]iHarvestNG.esp[/b]. Do [b]not[/b] use it together with the original IHarvest.
+
+[b]Switching from IHarvest:[/b]
+[list=1]
+[*]Use its MCM [i]Reset Mod[/i].
+[*]Remove it.
+[*]Make a clean save.
+[/list]
+
+[b]Uninstalling NG:[/b]
+[list=1]
+[*]Stop casting and wait for your wisps to return.
+[*]Save.
+[*]Remove the mod.
+[/list]
+
+[size=4][b]Settings[/b][/size]
+In SKSE Menu Framework, go to [b]iHarvest NG[/b].
+[list]
+[*][b]Status & Maintenance[/b] shows live counts, with Recall all wisps and Reset.
+[*][b]Settings[/b] holds every option. Changes apply live.
+[/list]
+
+[size=4][b]Source[/b][/size]
+[url=https://github.com/Kexodus/iharvest-ng]github.com/Kexodus/iharvest-ng[/url] (GPL-3.0)
+
+[size=4][b]Credits & permissions[/b][/size]
+[list]
+[*][b]IDontEvenKnow[/b] made the original IHarvest, released under the WTFPL. All gameplay design, records, meshes and sounds are theirs, and the mod is renamed as the license asks.
+[*][b]CommonLibSSE-NG[/b] contributors (alandtse, CharmedBaryon, powerofthree and others).
+[*]The [b]SKSE Menu Framework[/b] team.
+[/list]
+The iHarvest NG source is GPL-3.0. The reused original IHarvest assets are WTFPL.
