@@ -21,7 +21,7 @@ to upload it.
 ### Also upload to the Images tab
 [![Comparison chart](images/comparison.png)](images/comparison.png)
 
-[Download comparison.png (1600×980)](https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/comparison.png)
+[Download comparison.png (1600×928)](https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/comparison.png)
 
 ### Section headers (already embedded in the description; nothing to upload)
 ![features](images/section_features.png)
