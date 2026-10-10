@@ -9,29 +9,29 @@ to upload it.
 ## 1. Images (upload these)
 
 ### Header image (Nexus "Header image" slot)
-[![Header banner](images/banner.png)](images/banner.png)
+[![Header banner](images/banner-nordic.png)](images/banner-nordic.png)
 
-[Download banner.png (1920×480)](https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/banner.png)
+[Download banner-nordic.png (1920×480)](https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/banner-nordic.png)
 
 ### Primary image (Nexus "Primary image" / thumbnail slot)
-[![Thumbnail](images/thumbnail.png)](images/thumbnail.png)
+[![Thumbnail](images/thumbnail-nordic.png)](images/thumbnail-nordic.png)
 
-[Download thumbnail.png (1280×720)](https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/thumbnail.png)
+[Download thumbnail-nordic.png (1280×720)](https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/thumbnail-nordic.png)
 
 ### Also upload to the Images tab
-[![Comparison chart](images/comparison.png)](images/comparison.png)
+[![Comparison chart](images/comparison-nordic.png)](images/comparison-nordic.png)
 
-[Download comparison.png (1600×928)](https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/comparison.png)
+[Download comparison-nordic.png (1600×928)](https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/comparison-nordic.png)
 
 ### Section headers (already embedded in the description; nothing to upload)
-![features](images/section_features.png)
-![how_it_works](images/section_how_it_works.png)
-![requirements](images/section_requirements.png)
-![installation](images/section_installation.png)
-![settings](images/section_settings.png)
-![compatibility](images/section_compatibility.png)
-![faq](images/section_faq.png)
-![credits](images/section_credits.png)
+![features](images/section_features-nordic.png)
+![how_it_works](images/section_how_it_works-nordic.png)
+![requirements](images/section_requirements-nordic.png)
+![installation](images/section_installation-nordic.png)
+![settings](images/section_settings-nordic.png)
+![compatibility](images/section_compatibility-nordic.png)
+![faq](images/section_faq-nordic.png)
+![credits](images/section_credits-nordic.png)
 
 ---
 
@@ -64,7 +64,7 @@ Native SKSE remake of IHarvest: cast Harvest and wisps pick every ingredient aro
 The art is already embedded in it and loads from GitHub automatically.
 
 ```text
-[center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/banner.png[/img]
+[center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/banner-nordic.png[/img]
 
 [size=4][i]Cast [b]Harvest[/b] and little wisps fly out, pick every ingredient around you, and bring it back.
 The IHarvest you know, rebuilt from scratch as a native SKSE plugin. No scripts, no quests, no conflicts.[/i][/size]
@@ -73,7 +73,7 @@ The IHarvest you know, rebuilt from scratch as a native SKSE plugin. No scripts,
 
 [line]
 
-[center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/section_features.png[/img][/center]
+[center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/section_features-nordic.png[/img][/center]
 
 [b]iHarvest NG[/b] is a complete native reimplementation of [url=https://www.nexusmods.com/skyrimspecialedition/mods/27789]IHarvest[/url] by IDontEvenKnow. The original relied on about 3,800 lines of Papyrus: 8 quests, Story Manager searches, and actor "critters" walking on AI packages. All of it is now C++ running inside the game loop.
 
@@ -88,9 +88,9 @@ The IHarvest you know, rebuilt from scratch as a native SKSE plugin. No scripts,
 [*][b]VR-ready.[/b] The plugin is an ESL-flagged .esp: light on SE/AE, and a normal plugin on VR with no renaming.
 [/list]
 
-[center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/comparison.png[/img][/center]
+[center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/comparison-nordic.png[/img][/center]
 
-[center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/section_how_it_works.png[/img][/center]
+[center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/section_how_it_works-nordic.png[/img][/center]
 
 [b]Getting the spell[/b]
 [list]
@@ -119,7 +119,7 @@ The IHarvest you know, rebuilt from scratch as a native SKSE plugin. No scripts,
 [*]Owned items are never taken (toggleable). NPCs who know the spell or carry the staff send wisps too.
 [/list]
 
-[center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/section_requirements.png[/img][/center]
+[center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/section_requirements-nordic.png[/img][/center]
 
 [list]
 [*][url=https://www.nexusmods.com/skyrimspecialedition/mods/30379]SKSE[/url] (or SKSEVR for VR)
@@ -128,7 +128,7 @@ The IHarvest you know, rebuilt from scratch as a native SKSE plugin. No scripts,
 [/list]
 Not required: SkyUI, PapyrusUtil, SkyPal, USSEP, or any patch.
 
-[center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/section_installation.png[/img][/center]
+[center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/section_installation-nordic.png[/img][/center]
 
 [b]New install:[/b] install with your mod manager and enable [b]iHarvestNG.esp[/b]. Load order doesn't matter.
 
@@ -148,7 +148,7 @@ Not required: SkyUI, PapyrusUtil, SkyPal, USSEP, or any patch.
 [*]Save, then remove the mod.
 [/list]
 
-[center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/section_settings.png[/img][/center]
+[center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/section_settings-nordic.png[/img][/center]
 
 Open [b]SKSE Menu Framework[/b] and go to [b]iHarvest NG[/b]. Changes apply live and are saved when the menu closes.
 [list]
@@ -169,7 +169,7 @@ Open [b]SKSE Menu Framework[/b] and go to [b]iHarvest NG[/b]. Changes apply live
 [/list]
 No Menu Framework? Every option is in [i]Data/SKSE/Plugins/iHarvestNG.ini[/i], with comments.
 
-[center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/section_compatibility.png[/img][/center]
+[center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/section_compatibility-nordic.png[/img][/center]
 
 [list]
 [*][b]Compatible with everything[/b] that doesn't also give you an IHarvest spell. The plugin adds new records only and touches nothing vanilla.
@@ -178,7 +178,7 @@ No Menu Framework? Every option is in [i]Data/SKSE/Plugins/iHarvestNG.ini[/i], w
 [*][b]VR:[/b] the DLL supports VR, and every engine address it uses is verified against the VR Address Library. Feedback from VR players is very welcome.
 [/list]
 
-[center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/section_faq.png[/img][/center]
+[center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/section_faq-nordic.png[/img][/center]
 
 [spoiler]
 [b]Why is there still a plugin?[/b]
@@ -197,7 +197,7 @@ Raise [i]Flight speed[/i] (up to 20×), dual cast with the Alteration Dual Casti
 Documents/My Games/Skyrim Special Edition/SKSE/iHarvestNG.log. Set the log level to "debug" under Diagnostics when reporting a bug.
 [/spoiler]
 
-[center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/section_credits.png[/img][/center]
+[center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/section_credits-nordic.png[/img][/center]
 
 [list]
 [*][b]IDontEvenKnow[/b] made the original [url=https://www.nexusmods.com/skyrimspecialedition/mods/27789]IHarvest[/url]. All the gameplay design, records, wisp meshes and sounds are theirs, released under the WTFPL, and the mod is renamed as that license asks. Please endorse the original too.

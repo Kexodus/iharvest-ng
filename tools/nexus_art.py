@@ -22,6 +22,8 @@ from PIL import Image, ImageDraw, ImageFont
 ROOT = Path(__file__).resolve().parents[1]
 FONTS = ROOT / "tools/fonts"
 SS = 2  # supersampling factor
+# Bumped whenever the art style changes: new file names defeat GitHub/browser image caches.
+TAG = "nordic"
 
 BG_CENTER = (24, 24, 23)
 BG_EDGE = (10, 10, 10)
@@ -115,7 +117,7 @@ def banner(out: Path):
 	c = Canvas(1920, 480, seed=3)
 	c.frame(40, 40, 1880, 440)
 	title_block(c, 200, 104, 22, 300)
-	c.save(out / "banner.png")
+	c.save(out / f"banner-{TAG}.png")
 
 
 def thumbnail(out: Path):
@@ -123,7 +125,7 @@ def thumbnail(out: Path):
 	c.frame(36, 36, 1244, 684)
 	title_block(c, 316, 96, 22, 270)
 	c.text(c.w / 2, 560, "WISPS THAT HARVEST EVERY INGREDIENT AROUND YOU", font("Jost", 15, "Light"), INK_FAINT, tracking=0.30)
-	c.save(out / "thumbnail.png")
+	c.save(out / f"thumbnail-{TAG}.png")
 
 
 ROWS = [
@@ -172,7 +174,7 @@ def compare(out: Path):
 		c.text(x2, y, b, body, INK, anchor="lm")
 	end = top + 46 + len(ROWS) * row_h + 4
 	c.line(x0, end, x3, end, INK_FAINT)
-	c.save(out / "comparison.png")
+	c.save(out / f"comparison-{TAG}.png")
 
 
 SECTIONS = ["Features", "How It Works", "Requirements", "Installation", "Settings", "Compatibility", "FAQ", "Credits"]
@@ -191,7 +193,7 @@ def section_headers(out: Path):
 			c.line(w / 2 + sgn * gap, h / 2, w / 2 + sgn * 470, h / 2, INK_FAINT)
 			c.diamond(w / 2 + sgn * (gap - 14), h / 2, 4.5, GOLD)
 			c.diamond(w / 2 + sgn * 470, h / 2, 2.4, INK_FAINT, fill=INK_FAINT)
-		c.save(out / f"section_{name.lower().replace(' ', '_')}.png")
+		c.save(out / f"section_{name.lower().replace(' ', '_')}-{TAG}.png")
 
 
 def main():
