@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.3 (2026-10-10)
+
+- **Fix: Respect ownership skipped things you're allowed to take.** Items the game lets you *take*
+  rather than *steal* (for example in the Blue Palace once you're its steward) were still left alone,
+  because an extra owner/faction test copied from the original disagreed with the game. For the
+  player, the game's own stealing check is now the only test, so wisps take exactly what you could
+  take yourself without stealing. NPC casters are unchanged.
+
 ## 1.0.2 (2026-10-10)
 
 - **Fix: Spell Tomes and Staves of Harvest missing** in interiors you enter through a load door, such as

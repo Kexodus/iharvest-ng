@@ -298,10 +298,14 @@ namespace ihng::harvest
 			return false;
 		}
 		if (a_respectOwnership && a_kind != Kind::kArrow) {
-			if (!AllowedToTake(a_ref, a_caster)) {
-				return false;
-			}
-			if (a_caster == RE::PlayerCharacter::GetSingleton() && a_ref->IsCrimeToActivate()) {
+			// For the player, the engine's own crime test is the authority (it decides "Take" vs "Steal"
+			// and knows ownership granted by quests/mods, e.g. being made steward of the Blue Palace). The
+			// original's NPC-or-faction test is only a fallback for NPC casters.
+			if (a_caster == RE::PlayerCharacter::GetSingleton()) {
+				if (a_ref->IsCrimeToActivate()) {
+					return false;
+				}
+			} else if (!AllowedToTake(a_ref, a_caster)) {
 				return false;
 			}
 		}
