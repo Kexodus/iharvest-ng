@@ -18,20 +18,51 @@ namespace ihng::hooks
 			static inline REL::Relocation<decltype(thunk)> func;
 		};
 
+		// Fallback for runtimes whose Main::Update layout we have not verified (AE 1.7.99+ moved the call
+		// above). A vtable slot needs no code offset. It does not run while the game is paused or at the
+		// main menu, which Manager::Update skips anyway; queued tasks simply wait for the next game frame.
+		struct PlayerUpdate
+		{
+			static void thunk(RE::PlayerCharacter* a_this, float a_delta)
+			{
+				func(a_this, a_delta);
+				Manager::GetSingleton().Update();
+			}
+			static inline REL::Relocation<decltype(thunk)> func;
+		};
+
 		std::uintptr_t CallSite()
 		{
 			const bool ae1130 = REL::Module::IsAE() && REL::Module::get().version() >= SKSE::RUNTIME_SSE_1_6_1130;
 			REL::Relocation<std::uintptr_t> target{ RELOCATION_ID(35565, 36564), REL::Relocate(0x748, ae1130 ? 0xC2B : 0xC26, 0x7EE) };
 			return target.address();
 		}
+
+		bool InstallPlayerUpdate()
+		{
+			REL::Relocation<std::uintptr_t> vtbl{ RE::VTABLE_PlayerCharacter[0] };
+			PlayerUpdate::func = vtbl.write_vfunc(0xAD, PlayerUpdate::thunk);
+			logger::info("Hooks: player update hook installed (runtime {})", REL::Module::get().version().string());
+			return true;
+		}
 	}
 
 	bool Install()
 	{
+		const auto version = REL::Module::get().version();
+		if (!REL::Module::IsVR() && version >= SKSE::RUNTIME_SSE_1_7_99) {
+			return InstallPlayerUpdate();
+		}
+
 		const auto site = CallSite();
 		if (*reinterpret_cast<const std::uint8_t*>(site) != 0xE8) {
+			if (!REL::Module::IsVR()) {
+				logger::warn("Hooks: Main::Update call site at {:#x} is not a CALL (runtime {}); using player update hook",
+					site, version.string());
+				return InstallPlayerUpdate();
+			}
 			logger::critical("Hooks: Main::Update call site at {:#x} is not a CALL (runtime {}); IHarvest NG disabled",
-				site, REL::Module::get().version().string());
+				site, version.string());
 			return false;
 		}
 

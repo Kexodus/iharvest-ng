@@ -124,6 +124,11 @@ No Menu Framework? Every option is in [i]Data/SKSE/Plugins/IHarvestNG.ini[/i], w
 
 [center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/presskit/nexus/section-09-changelog.png[/img][/center]
 
+[b]1.0.8[/b]
+[list]
+[*]Works on Skyrim AE 1.7.99 / 1.7.104 (it disabled itself there: "Main::Update call site ... is not a CALL").
+[/list]
+
 [b]1.0.7[/b]
 [list]
 [*]Wisps are no longer sent to targets they can't reach: searches stay within 10,000 units, and long or slow trips get the time they need instead of timing out.

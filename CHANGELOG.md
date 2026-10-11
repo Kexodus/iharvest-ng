@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.8 (2026-10-11)
+
+- **Fix: disabled itself on Skyrim AE 1.7.99 / 1.7.104** ("Main::Update call site ... is not a CALL").
+  The main-loop call it hooked moved in 1.7. On 1.7.99+ the per-frame update now hooks
+  PlayerCharacter::Update (a vtable slot, no code offset). SE, AE 1.6.x and VR keep the Main::Update
+  hook; on SE/AE an unexpected call site now falls back to the player hook instead of disabling the mod.
+
 ## 1.0.7 (2026-10-11)
 
 - **Fix: wisps sent to targets they could never reach.** The search radius (up to ~32,000 units with

@@ -109,7 +109,7 @@ IHarvest NG
 
 ### Version
 ```text
-1.0.7
+1.0.8
 ```
 
 ### Category
@@ -124,7 +124,7 @@ Kexodus
 
 ### Files tab: main file
 
-**Upload:** [IHarvest.NG.zip](https://github.com/Kexodus/iharvest-ng/releases/download/v1.0.7/IHarvest.NG.zip) (GitHub shows the space as a dot; rename it to `IHarvest NG.zip` if you like). Category: *Main Files*.
+**Upload:** [IHarvest.NG.zip](https://github.com/Kexodus/iharvest-ng/releases/download/v1.0.8/IHarvest.NG.zip) (GitHub shows the space as a dot; rename it to `IHarvest NG.zip` if you like). Category: *Main Files*.
 
 File name:
 ```text
@@ -132,11 +132,11 @@ IHarvest NG
 ```
 File version:
 ```text
-1.0.7
+1.0.8
 ```
 File description:
 ```text
-Skyrim SE 1.5.97 / AE 1.6.x / VR. Install with a mod manager and enable IHarvestNG.esp. Requires SKSE + Address Library. Do not use together with the original IHarvest.
+Skyrim SE 1.5.97 / AE 1.6.x and 1.7.x / VR. Install with a mod manager and enable IHarvestNG.esp. Requires SKSE + Address Library. Do not use together with the original IHarvest.
 ```
 
 ### Requirements tab
@@ -149,6 +149,10 @@ Add these as requirements (search by name or ID):
 | SKSE Menu Framework | 120352 | `Optional - in-game settings page (INI otherwise)` |
 
 ### Changelog tab
+Version `1.0.8`:
+```text
+Fixed the mod disabling itself on Skyrim AE 1.7.99 / 1.7.104 ("Main::Update call site ... is not a CALL" in IHarvestNG.log).
+```
 Version `1.0.7`:
 ```text
 Fixed wisps being sent to targets they could never reach (high search radius or low flight speed cost magicka for nothing). Fixed the cast restarting every frame when out of magicka. Tomes/staves are no longer placed under the loading screen. A Spell Tome you drop yourself no longer vanishes. Sturdier save data.
