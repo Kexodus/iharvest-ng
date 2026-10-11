@@ -45,16 +45,23 @@ The BBCode file already uses these. They are 1200×112.
 
 | File | Notes |
 |---|---|
-| [`logo/ihng-icon-1024.png`](logo/ihng-icon-1024.png) | Icon on the dark background |
-| [`logo/ihng-icon-512.png`](logo/ihng-icon-512.png), [`logo/ihng-icon-256.png`](logo/ihng-icon-256.png) | Avatar / icon sizes |
-| [`logo/ihng-icon-transparent.png`](logo/ihng-icon-transparent.png) | Icon only, transparent background |
+| [`logo/ihng-icon-minimal.svg`](logo/ihng-icon-minimal.svg) | **Source.** The icon on its dark background. Edit this, then re-export |
+| [`logo/ihng-icon-minimal-transparent.svg`](logo/ihng-icon-minimal-transparent.svg) | The same without the background square (its cut-outs are still painted dark) |
+| [`logo/ihng-icon-minimal-1024.png`](logo/ihng-icon-minimal-1024.png) | Icon on the dark background |
+| [`logo/ihng-icon-minimal-512.png`](logo/ihng-icon-minimal-512.png), [`logo/ihng-icon-minimal-256.png`](logo/ihng-icon-minimal-256.png) | Avatar / icon sizes |
+| [`logo/ihng-icon-minimal-transparent.png`](logo/ihng-icon-minimal-transparent.png) | Icon only, transparent background, trimmed; cut-outs are real holes (made by `src/cutout.py`) |
 
-<img src="logo/ihng-icon-512.png" width="256">
+<img src="logo/ihng-icon-minimal-512.png" width="256">
 
-The icon: a hand seen from the side, palm up, holding a Harvest spell (a gold orb with swirls and sparkles),
-with a leaf, a mushroom and a flower spiralling into it. The arm runs off the bottom edge, so on the header
-and primary image the icon stands on the bottom of the frame. The transparent file is light artwork. Place
+The icon: an open palm with a rounded wrist cut, holding a Harvest spell (a gold orb in a swirl, three
+sparkles), ringed by Skyrim harvestables on a dotted circle: a fly amanita, a blue mountain flower, a
+butterfly, a fish, juniper berries, wheat, a leaf and nirnroot. The transparent file is light artwork. Place
 it only on dark backgrounds.
+
+The hand is traced from ["Open palm" by Skoll](https://github.com/game-icons/icons/blob/master/skoll/open-palm.svg)
+on [game-icons.net](https://game-icons.net), [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)
+(see [`src/third_party/`](src/third_party/README.md)). Keep the credit wherever the icon is used; the
+description and the Nexus credits box already carry it.
 
 ## Style
 
@@ -62,24 +69,25 @@ it only on dark backgrounds.
 |---|---|---|
 | Background | `#0d0d0c` | Every canvas |
 | Foreground | `#e8e3d8` | Icon, headings, body text |
-| Dim | `#969188` | Secondary text, trails |
-| Accent | `#c4b288` | Magic only: the spell, its swirls and sparkles. Nothing else is gold. |
+| Dim | `#969188` | Secondary text, the icon's dotted circle |
+| Accent | `#c4b288` | Magic only: the spell's orb, swirl and sparkles. Nothing else is gold. |
 | Type | Cinzel (titles), Jost (body) | Uppercase titles with wide letter spacing. Both SIL OFL, in `src/fonts/` |
 
 Keep it flat: no gradients, glows, textures, frames or extra colors. One idea per image, no taglines or spec badges.
-The orb mark in the section headers is redrawn from the icon's spell.
+The sparkle mark in the section headers is redrawn from the icon's spell.
 
 ## Rebuild
 
-Requires Python 3 with Pillow (`python -m pip install pillow`).
+Requires Windows, Python 3 with Pillow (`python -m pip install pillow`), and Microsoft Edge (renders the SVG).
 
 ```powershell
-python presskit/src/logo.py    # logo/ icon in every size
-python presskit/src/build.py   # nexus/ images (uses the icon from logo/)
+python presskit/src/cutout.py   # logo/ transparent cut-out from logo/ihng-icon-minimal.svg
+python presskit/src/build.py    # nexus/ images (the header and primary image render the same SVG)
 ```
 
-Image copy lives in `presskit/src/build.py`, the icon in `presskit/src/logo.py`. Change them there, rebuild, and
-commit the PNGs. Nexus loads the description images from `main`.
+The icon lives in `logo/ihng-icon-minimal.svg`; export its 1024/512/256 PNGs alongside it when it changes.
+Image copy lives in `presskit/src/build.py`. Rebuild and commit the PNGs. Nexus loads the description
+images from `main`.
 
 ## Nexus fields
 
@@ -169,6 +177,7 @@ Credits (the "Credits" text box):
 IDontEvenKnow - the original IHarvest (WTFPL): gameplay design, records, wisp meshes and sounds. Please endorse the original too.
 vh724 - iHarvest - Redux, the SkyPal-free rework of IHarvest.
 CommonLibSSE-NG contributors (alandtse, CharmedBaryon, powerofthree and others).
+Skoll - the open-palm hand in the icon (game-icons.net, CC BY 3.0).
 SKSE team, meh321 (Address Library), SKSE Menu Framework team.
 ```
 Suggested toggles:

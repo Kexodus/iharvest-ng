@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """build.py - render the IHarvest NG Nexus art into presskit/nexus/.
 
-Run from the repo root after presskit/src/logo.py (the header and primary image use its icon):
+Run from the repo root (the header and primary image draw the icon from presskit/logo/ihng-icon-minimal.svg):
 
-    python presskit/src/logo.py
-    python presskit/src/build.py
+    python presskit/src/cutout.py   # logo/ transparent cut-out
+    python presskit/src/build.py    # nexus/ images
 
 Flat near-black, bone-white type, one gold accent. No frames, gradients, taglines or spec badges.
-Drawn at 2x and downsampled for clean thin lines. Needs Pillow (dev-only): python -m pip install pillow
+Drawn at 2x and downsampled for clean thin lines. Needs Pillow and Microsoft Edge (dev-only): python -m pip install pillow
 
 Fonts (SIL OFL, see presskit/src/fonts/*-OFL.txt): Cinzel (titles), Jost (everything else).
 """
@@ -15,16 +15,17 @@ Fonts (SIL OFL, see presskit/src/fonts/*-OFL.txt): Cinzel (titles), Jost (everyt
 from __future__ import annotations
 
 import argparse
+import sys
+import math
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageChops, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[2]
 FONTS = Path(__file__).resolve().parent / "fonts"
-LOGO = ROOT / "presskit/logo/ihng-icon-transparent.png"
 SS = 2  # supersampling factor
 
-BG = (13, 13, 12)            # shared with logo.py
+BG = (13, 13, 12)            # the icon's background (#0d0d0c), shared with cutout.py
 INK = (232, 227, 216)        # bone white
 INK_DIM = (150, 145, 136)
 INK_FAINT = (60, 58, 55)
@@ -66,34 +67,59 @@ class Canvas:
 		widths = [self.d.textlength(ch, font=f) for ch in s]
 		return (sum(widths) + tracking * f.size * (len(s) - 1)) / SS
 
-	def icon(self, x, height) -> float:
-		"""The logo icon, left edge at x, standing on the bottom edge (the arm comes into frame from
-		below, as in the square icon). Returns its width."""
-		with Image.open(LOGO) as src:
-			w = src.width * height / src.height
-			icon = src.convert("RGBA").resize((int(w * SS), int(height * SS)), Image.LANCZOS)
-		self.img.alpha_composite(icon, (int(self.s(x)), int(self.s(self.h - height))))
+	def icon(self, x, y, height) -> float:
+		"""The logo icon with its top-left at (x, y), scaled to the given height. Returns its width.
+		Pasted opaque from logo.render() on the same background, so the soft glow keeps every shade."""
+		src = icon_art()
+		w = src.width * height / src.height
+		self.img.paste(src.resize((int(w * SS), int(height * SS)), Image.LANCZOS, reducing_gap=3.0), (int(self.s(x)), int(self.s(y))))
 		return w
 
 	@staticmethod
 	def icon_width(height) -> float:
-		with Image.open(LOGO) as src:
-			return src.width * height / src.height
+		src = icon_art()
+		return src.width * height / src.height
 
 	def orb(self, cx, cy, r):
-		"""The small gold orb mark from the logo: a disc and a thin halo."""
-		s = self.s
-		self.d.ellipse([s(cx - r), s(cy - r), s(cx + r), s(cy + r)], fill=GOLD)
-		h = r * 1.55
-		self.d.ellipse([s(cx - h), s(cy - h), s(cx + h), s(cy + h)], outline=GOLD, width=SS)
+		"""The icon's sparkle (its SVG path "M 0 -34 C 4 -8 8 -4 34 0 ..." mirrored into four arms), r = arm length."""
+		def cubic(p0, p1, p2, p3, n=16):
+			return [tuple((1 - t) ** 3 * a + 3 * (1 - t) ** 2 * t * b + 3 * (1 - t) * t * t * c + t ** 3 * d
+			              for a, b, c, d in zip(p0, p1, p2, p3)) for t in (i / n for i in range(n))]
+		k = r / 34
+		quarter = cubic((0, -34), (4, -8), (8, -4), (34, 0))
+		pts = []
+		for rot in range(4):  # rotate the quarter by 0/90/180/270 degrees
+			for x, y in quarter:
+				for _ in range(rot):
+					x, y = -y, x
+				pts.append((self.s(cx + x * k), self.s(cy + y * k)))
+		self.d.polygon(pts, fill=GOLD)
 
-	def save(self, path: Path):
-		out = self.img.resize((self.w, self.h), Image.LANCZOS).convert("RGB")
-		# Flat art: a 256-colour palette is visually lossless here and much smaller.
-		out.quantize(colors=256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.FLOYDSTEINBERG).save(path, optimize=True)
+	def save(self, path: Path, palette: bool = True):
+		out = self.img.resize((self.w, self.h), Image.BOX).convert("RGB")  # exact 2x: no ringing
+		if palette:
+			# Flat art: a 256-colour palette is visually lossless here and much smaller.
+			out = out.quantize(colors=256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.FLOYDSTEINBERG)
+		out.save(path, optimize=True)  # palette=False for images with the spell's glow (a palette bands it)
 
 
 NAME = "IHARVEST NG"
+
+_ICON = None
+
+
+def icon_art() -> Image.Image:
+	"""The icon (presskit/logo/ihng-icon-minimal.svg), rendered large and opaque on BG, cropped to its
+	artwork (rendered once)."""
+	global _ICON
+	if _ICON is None:
+		sys.path.insert(0, str(Path(__file__).resolve().parent))
+		import cutout
+		art = cutout.render_svg(cutout.SOURCE, 4096)
+		box = ImageChops.difference(art, Image.new("RGB", art.size, BG)).point(lambda v: 255 if v > 2 else 0).getbbox()
+		_ICON = art.crop(box)
+	return _ICON
+
 
 
 def lockup(c: Canvas, icon_h: float, gap: float, size: int, tracking: float):
@@ -102,20 +128,20 @@ def lockup(c: Canvas, icon_h: float, gap: float, size: int, tracking: float):
 	tw = c.text_width(NAME, f, tracking)
 	iw = c.icon_width(icon_h)
 	x = (c.w - (iw + gap + tw)) / 2
-	c.icon(x, icon_h)
+	c.icon(x, (c.h - icon_h) / 2, icon_h)
 	c.text(x + iw + gap, c.h / 2 + size * 0.05, NAME, f, INK, tracking=tracking, anchor="lm")
 
 
 def header(out: Path):
 	c = Canvas(1920, 480)
-	lockup(c, 440, 90, 92, 0.14)
-	c.save(out / "ihng-header-1920x480.png")
+	lockup(c, 420, 90, 92, 0.14)
+	c.save(out / "ihng-header-1920x480.png", palette=False)
 
 
 def primary(out: Path):
 	c = Canvas(1920, 1080)
-	lockup(c, 840, 120, 100, 0.12)
-	c.save(out / "ihng-primary-1920x1080.png")
+	lockup(c, 860, 120, 104, 0.12)
+	c.save(out / "ihng-primary-1920x1080.png", palette=False)
 
 
 ROWS = [
@@ -158,7 +184,7 @@ def section_headers(out: Path):
 	f = font("Cinzel", 34)
 	for i, name in enumerate(SECTIONS, 1):
 		c = Canvas(1200, 112)
-		c.orb(40, c.h / 2, 11)
+		c.orb(40, c.h / 2, 20)
 		c.text(84, c.h / 2 + 1, name.upper(), f, INK, tracking=0.24, anchor="lm")
 		c.save(out / f"section-{i:02d}-{name.lower().replace(' ', '-')}.png")
 
@@ -167,8 +193,6 @@ def main():
 	ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
 	ap.add_argument("-o", "--out", type=Path, default=ROOT / "presskit/nexus")
 	args = ap.parse_args()
-	if not LOGO.exists():
-		raise SystemExit(f"{LOGO} missing: run presskit/src/logo.py first")
 	args.out.mkdir(parents=True, exist_ok=True)
 	for old in args.out.glob("*.png"):
 		old.unlink()
