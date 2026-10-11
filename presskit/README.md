@@ -2,7 +2,7 @@
 
 Art and copy for the **IHarvest NG** Nexus page. Everything here is loose files. Nothing is zipped.
 
-![Header](nexus/ihng-header-1920x480.png)
+![Header](nexus/ihng-banner-transparent-1920x480.png)
 
 ## Copy-paste text
 
@@ -21,7 +21,7 @@ Upload these on the Nexus **Images** tab. Make the primary image the mod's **Pri
 |---|---|---|
 | [`ihng-primary-1920x1080.png`](nexus/ihng-primary-1920x1080.png) | 1920×1080 | Primary image / thumbnail |
 | [`ihng-gallery-comparison-1920x1080.png`](nexus/ihng-gallery-comparison-1920x1080.png) | 1920×1080 | Gallery: original IHarvest vs NG |
-| [`ihng-header-1920x480.png`](nexus/ihng-header-1920x480.png) | 1920×480 | Description banner / page header |
+| [`ihng-header-1920x480.png`](nexus/ihng-header-1920x480.png) | 1920×480 | Nexus **Header image** slot |
 | [`ihng-icon-minimal-1024.png`](logo/ihng-icon-minimal-1024.png) | 1024×1024 | Optional gallery image: the icon on its own |
 
 <p>
@@ -29,9 +29,17 @@ Upload these on the Nexus **Images** tab. Make the primary image the mod's **Pri
   <img src="nexus/ihng-gallery-comparison-1920x1080.png" width="49%">
 </p>
 
-## Description section headers
+## Description images
 
-The BBCode file already uses these. They are 1200×112.
+The BBCode file already uses these. They are **transparent**, so they sit on the Nexus page itself
+instead of in dark boxes (the background is taken back out of the finished art, so edges stay clean and
+faint lines become translucent).
+
+| Image | Size | Use |
+|---|---|---|
+| [`ihng-banner-transparent-1920x480.png`](nexus/ihng-banner-transparent-1920x480.png) | 1920×480 | Top of the description |
+| [`ihng-comparison-transparent-1600x660.png`](nexus/ihng-comparison-transparent-1600x660.png) | 1600×660 | Comparison under Features |
+| `section-01-…` to `section-08-…` | 1200×112 | Section headers |
 
 ![Features](nexus/section-01-features.png)
 ![How it works](nexus/section-02-how-it-works.png)
@@ -75,6 +83,7 @@ description and the Nexus credits box already carry it.
 | Type | Cinzel (titles), Jost (body) | Uppercase titles with wide letter spacing. Both SIL OFL, in `src/fonts/` |
 
 Keep it flat: no gradients, glows, textures, frames or extra colors. One idea per image, no taglines or spec badges.
+Images that go in the description are transparent; images uploaded to Nexus slots (header, primary, gallery) are opaque.
 The sparkle mark in the section headers is redrawn from the icon's spell.
 
 ## Rebuild

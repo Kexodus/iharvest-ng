@@ -95,8 +95,13 @@ class Canvas:
 				pts.append((self.s(cx + x * k), self.s(cy + y * k)))
 		self.d.polygon(pts, fill=GOLD)
 
-	def save(self, path: Path, palette: bool = True):
+	def save(self, path: Path, palette: bool = True, transparent: bool = False):
 		out = self.img.resize((self.w, self.h), Image.BOX).convert("RGB")  # exact 2x: no ringing
+		if transparent:
+			# For the description: take the background back out so the image sits on the Nexus page
+			# itself. Faint lines come out as translucent dim ink, so they still read on its grey.
+			cutout().unmix(out, [INK, INK_DIM, GOLD]).save(path, optimize=True)
+			return
 		if palette:
 			# Flat art: a 256-colour palette is visually lossless here and much smaller.
 			out = out.quantize(colors=256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.FLOYDSTEINBERG)
@@ -108,14 +113,18 @@ NAME = "IHARVEST NG"
 _ICON = None
 
 
+def cutout():
+	sys.path.insert(0, str(Path(__file__).resolve().parent))
+	import cutout as module
+	return module
+
+
 def icon_art() -> Image.Image:
 	"""The icon (presskit/logo/ihng-icon-minimal.svg), rendered large and opaque on BG, cropped to its
 	artwork (rendered once)."""
 	global _ICON
 	if _ICON is None:
-		sys.path.insert(0, str(Path(__file__).resolve().parent))
-		import cutout
-		art = cutout.render_svg(cutout.SOURCE, 4096)
+		art = cutout().render_svg(cutout().SOURCE, 4096)
 		box = ImageChops.difference(art, Image.new("RGB", art.size, BG)).point(lambda v: 255 if v > 2 else 0).getbbox()
 		_ICON = art.crop(box)
 	return _ICON
@@ -135,7 +144,8 @@ def lockup(c: Canvas, icon_h: float, gap: float, size: int, tracking: float):
 def header(out: Path):
 	c = Canvas(1920, 480)
 	lockup(c, 420, 90, 92, 0.14)
-	c.save(out / "ihng-header-1920x480.png", palette=False)
+	c.save(out / "ihng-header-1920x480.png", palette=False)                 # Nexus "Header image" slot
+	c.save(out / "ihng-banner-transparent-1920x480.png", transparent=True)  # top of the description
 
 
 def primary(out: Path):
@@ -152,13 +162,11 @@ ROWS = [
 ]
 
 
-def gallery_comparison(out: Path):
-	c = Canvas(1920, 1080)
+def comparison(c: Canvas, ty: float, top: float, rule_inset: float):
 	tf = font("Cinzel", 64)
 	left, right, gap = "IHARVEST", NAME, 150
 	lw, rw = c.text_width(left, tf, 0.12), c.text_width(right, tf, 0.12)
 	start = c.w / 2 - (lw + gap + rw) / 2
-	ty = 250
 	c.text(start + lw / 2, ty, left, tf, INK_DIM, tracking=0.12)
 	c.text(start + lw + gap + rw / 2, ty, right, tf, INK, tracking=0.12)
 	ax0, ax1 = start + lw + 40, start + lw + gap - 40
@@ -167,14 +175,25 @@ def gallery_comparison(out: Path):
 
 	xl, xr = start + lw / 2, start + lw + gap + rw / 2
 	body = font("Jost", 36, "Light")
-	row_h, top = 120, 420
+	row_h = 120
 	for i, (a, b) in enumerate(ROWS):
 		y = top + i * row_h
 		c.text(xl, y, a, body, INK_DIM)
 		c.text(xr, y, b, body, INK)
 		if i < len(ROWS) - 1:
-			c.line(330, y + row_h / 2, c.w - 330, y + row_h / 2)
-	c.save(out / "ihng-gallery-comparison-1920x1080.png")
+			c.line(rule_inset, y + row_h / 2, c.w - rule_inset, y + row_h / 2)
+
+
+def gallery_comparison(out: Path):
+	c = Canvas(1920, 1080)
+	comparison(c, 250, 420, 330)
+	c.save(out / "ihng-gallery-comparison-1920x1080.png")             # Images tab
+
+
+def description_comparison(out: Path):
+	c = Canvas(1600, 660)
+	comparison(c, 70, 230, 170)
+	c.save(out / "ihng-comparison-transparent-1600x660.png", transparent=True)  # in the description
 
 
 SECTIONS = ["Features", "How It Works", "Requirements", "Installation", "Settings", "Compatibility", "FAQ", "Credits"]
@@ -186,7 +205,7 @@ def section_headers(out: Path):
 		c = Canvas(1200, 112)
 		c.orb(40, c.h / 2, 20)
 		c.text(84, c.h / 2 + 1, name.upper(), f, INK, tracking=0.24, anchor="lm")
-		c.save(out / f"section-{i:02d}-{name.lower().replace(' ', '-')}.png")
+		c.save(out / f"section-{i:02d}-{name.lower().replace(' ', '-')}.png", transparent=True)
 
 
 def main():
@@ -199,6 +218,7 @@ def main():
 	header(args.out)
 	primary(args.out)
 	gallery_comparison(args.out)
+	description_comparison(args.out)
 	section_headers(args.out)
 	for p in sorted(args.out.glob("*.png")):
 		with Image.open(p) as im:

@@ -1,4 +1,4 @@
-[center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/presskit/nexus/ihng-header-1920x480.png[/img]
+[center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/presskit/nexus/ihng-banner-transparent-1920x480.png[/img]
 
 [size=4][i]Cast [b]Harvest[/b] and wisps pick every ingredient around you.[/i][/size]
 
@@ -21,7 +21,7 @@ The IHarvest you know, rebuilt as a native SKSE plugin.[/center]
 [*][b]VR-ready.[/b] The plugin is an ESL-flagged .esp: light on SE/AE, and a normal plugin on VR with no renaming.
 [/list]
 
-[center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/presskit/nexus/ihng-gallery-comparison-1920x1080.png[/img][/center]
+[center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/presskit/nexus/ihng-comparison-transparent-1600x660.png[/img][/center]
 
 [center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/presskit/nexus/section-02-how-it-works.png[/img][/center]
 
