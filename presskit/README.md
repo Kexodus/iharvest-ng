@@ -51,8 +51,10 @@ The BBCode file already uses these. They are 1200×112.
 
 <img src="logo/ihng-icon-512.png" width="256">
 
-The icon: a hand holding a Harvest spell, with a leaf, a mushroom and a flower flying into it. The
-transparent file is light artwork. Place it only on dark backgrounds.
+The icon: a hand seen from the side, palm up, holding a Harvest spell (a gold orb with swirls and sparkles),
+with a leaf, a mushroom and a flower spiralling into it. The arm runs off the bottom edge, so on the header
+and primary image the icon stands on the bottom of the frame. The transparent file is light artwork. Place
+it only on dark backgrounds.
 
 ## Style
 
@@ -61,11 +63,11 @@ transparent file is light artwork. Place it only on dark backgrounds.
 | Background | `#0d0d0c` | Every canvas |
 | Foreground | `#e8e3d8` | Icon, headings, body text |
 | Dim | `#969188` | Secondary text, trails |
-| Accent | `#c4b288` | The spell orb. Use it for one detail per image at most. |
+| Accent | `#c4b288` | Magic only: the spell, its swirls and sparkles. Nothing else is gold. |
 | Type | Cinzel (titles), Jost (body) | Uppercase titles with wide letter spacing. Both SIL OFL, in `src/fonts/` |
 
 Keep it flat: no gradients, glows, textures, frames or extra colors. One idea per image, no taglines or spec badges.
-The orb mark in the section headers is redrawn from the icon.
+The orb mark in the section headers is redrawn from the icon's spell.
 
 ## Rebuild
 

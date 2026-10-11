@@ -66,12 +66,19 @@ class Canvas:
 		widths = [self.d.textlength(ch, font=f) for ch in s]
 		return (sum(widths) + tracking * f.size * (len(s) - 1)) / SS
 
-	def icon(self, cx, cy, height):
-		"""The logo icon, centred on (cx, cy), scaled to the given height."""
+	def icon(self, x, height) -> float:
+		"""The logo icon, left edge at x, standing on the bottom edge (the arm comes into frame from
+		below, as in the square icon). Returns its width."""
 		with Image.open(LOGO) as src:
-			w = round(src.width * height / src.height)
+			w = src.width * height / src.height
 			icon = src.convert("RGBA").resize((int(w * SS), int(height * SS)), Image.LANCZOS)
-		self.img.alpha_composite(icon, (int(self.s(cx - w / 2)), int(self.s(cy - height / 2))))
+		self.img.alpha_composite(icon, (int(self.s(x)), int(self.s(self.h - height))))
+		return w
+
+	@staticmethod
+	def icon_width(height) -> float:
+		with Image.open(LOGO) as src:
+			return src.width * height / src.height
 
 	def orb(self, cx, cy, r):
 		"""The small gold orb mark from the logo: a disc and a thin halo."""
@@ -89,27 +96,25 @@ class Canvas:
 NAME = "IHARVEST NG"
 
 
+def lockup(c: Canvas, icon_h: float, gap: float, size: int, tracking: float):
+	"""Icon on the left, name on the right, centred as a pair."""
+	f = font("Cinzel", size)
+	tw = c.text_width(NAME, f, tracking)
+	iw = c.icon_width(icon_h)
+	x = (c.w - (iw + gap + tw)) / 2
+	c.icon(x, icon_h)
+	c.text(x + iw + gap, c.h / 2 + size * 0.05, NAME, f, INK, tracking=tracking, anchor="lm")
+
+
 def header(out: Path):
 	c = Canvas(1920, 480)
-	f = font("Cinzel", 96)
-	tw = c.text_width(NAME, f, 0.14)
-	icon_h, gap = 330, 70
-	icon_w = icon_h * 0.78
-	x = (c.w - (icon_w + gap + tw)) / 2
-	c.icon(x + icon_w / 2, c.h / 2, icon_h)
-	c.text(x + icon_w + gap, c.h / 2 + 4, NAME, f, INK, tracking=0.14, anchor="lm")
+	lockup(c, 440, 90, 92, 0.14)
 	c.save(out / "ihng-header-1920x480.png")
 
 
 def primary(out: Path):
 	c = Canvas(1920, 1080)
-	f = font("Cinzel", 120)
-	tw = c.text_width(NAME, f, 0.12)
-	icon_h, gap = 720, 90
-	icon_w = icon_h * 0.78
-	x = (c.w - (icon_w + gap + tw)) / 2
-	c.icon(x + icon_w / 2, c.h / 2, icon_h)
-	c.text(x + icon_w + gap, c.h / 2 + 6, NAME, f, INK, tracking=0.12, anchor="lm")
+	lockup(c, 840, 120, 100, 0.12)
 	c.save(out / "ihng-primary-1920x1080.png")
 
 

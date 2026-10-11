@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """logo.py - render the IHarvest NG icon (no lettering) into presskit/logo/.
 
-An open bone-white hand holds a gold spell orb; a leaf, a mushroom and a flower spiral into it, each
-with a short motion trail. Built like the CMC logo: one light silhouette, dark cut lines between its
-parts, one gold accent. Every part is a mask, so the cut lines are real holes in the transparent file.
+A bone-white hand, seen from the side with its palm up, holds a gold spell (orb, two swirls,
+sparkles); a leaf, a mushroom and a flower spiral into it, each with a short motion trail. Built like
+the CMC logo: one light silhouette, dark cut lines between the fingers, gold for the magic only. Every
+part is a mask, so the cut lines are real holes in the transparent file.
 
 Needs Pillow (dev-only; not part of the mod):  python -m pip install pillow
     python presskit/src/logo.py
@@ -15,7 +16,7 @@ import argparse
 import math
 from pathlib import Path
 
-from PIL import Image, ImageDraw
+from PIL import Image, ImageChops, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[2]
 W = 4096                     # working size; coordinates below are 0..1024 design units
@@ -26,7 +27,7 @@ GOLD = (196, 178, 136)       # the one accent
 TRAIL = (150, 145, 136)      # dim ink
 CUT = 13                     # dark cut lines between parts
 
-ORB = (512, 492, 60)         # centre x, y, radius
+ORB = (520, 470, 62)         # the spell: centre x, y, radius
 
 
 def P(x, y):
@@ -73,53 +74,107 @@ def path(*segments):
 	return pts
 
 
-# ---- hand ---------------------------------------------------------------------------------------
+# ---- hand: seen from the side, palm up and cupped, fingers curling up ---------------------------
 
-def finger(base, angle_deg, length, r):
-	a = math.radians(angle_deg)
-	return base, (base[0] + length * math.sin(a), base[1] - length * math.cos(a)), r
+DX, DY = -90, -40  # shifts the whole hand so the spell sits in the middle of the icon
 
 
-FINGERS = [
-	finger((420, 590), -13, 262, 28),   # index
-	finger((481, 574), -4, 300, 29),    # middle
-	finger((546, 576), 5, 282, 28),     # ring
-	finger((606, 596), 15, 214, 26),    # little
-]
-THUMB = ((410, 720), (300, 606), 32)
+def shift(pts):
+	return [(x + DX, y + DY) for x, y in pts]
+
+
+FOREARM = ((60 - DX, 1100), (450, 800), 76)
 
 PALM = path(
-	((410, 576), (600, 566), (612, 570), (626, 600)),
-	((626, 600), (662, 664), (650, 742), (604, 796)),
-	((604, 796), (586, 818), (580, 846), (584, 890)),
-	((584, 890), (586, 940), (590, 990), (594, 1024)),
-	((594, 1024), (540, 1024), (484, 1024), (430, 1024)),
-	((430, 1024), (434, 990), (438, 940), (440, 890)),
-	((440, 890), (444, 846), (436, 816), (414, 790)),
-	((414, 790), (376, 742), (370, 640), (410, 576)),
+	((388, 756), (452, 712), (560, 698), (618, 682)),   # inner forearm into the cupped palm
+	((618, 682), (690, 690), (700, 760), (650, 796)),   # knuckles, curling under
+	((650, 796), (566, 836), (452, 856), (378, 836)),   # back of the hand
+	((378, 836), (356, 830), (360, 800), (388, 756)),   # heel, inside the forearm
 )
 
+FINGERS = [  # cubic centre lines (base -> tip, curling up) and half-widths; nearest finger first
+	(((440, 748), (660, 712), (800, 664), (824, 584)), 27),
+	(((628, 726), (768, 730), (842, 690), (860, 624)), 26),
+	(((630, 762), (756, 774), (822, 744), (846, 690)), 24),
+	(((622, 792), (722, 806), (780, 786), (802, 746)), 21),
+]
+THUMB = (((452, 722), (434, 656), (448, 610), (490, 588)), 26)
 
-def hand() -> Mask:
-	"""One solid silhouette; fingers are separated by cut lines only where they rise above the palm."""
+
+def stroke(m: "Mask", seg, r, v=255, t0=0.0):
+	"""A round-ended thick curve, swept as dense discs (thick polylines leave seams at their joints)."""
+	pts = cubic(*seg, n=160)
+	for x, y in shift(pts[int(t0 * (len(pts) - 1)):]):
+		m.circle(x, y, r, v)
+
+
+def hand() -> "Mask":
+	"""One solid silhouette; fingers are separated by cut lines only outside the palm."""
 	m = Mask()
-	m.poly(PALM)
-	for b, t, r in FINGERS:
-		m.capsule(b, t, r)
-	b, t, r = THUMB
-	m.capsule(b, t, r)
+	(fa, fb, fr) = FOREARM
+	m.capsule(*shift([fa, fb]), fr)
+	m.poly(shift(PALM))
+	for seg, r in FINGERS:
+		stroke(m, seg, r)
+	stroke(m, *THUMB)
 
-	cuts = Mask()
-	for b, t, r in FINGERS:
-		cuts.capsule(b, t, r + CUT / 2)
-		cuts.capsule(b, t, r, 0)
-	cuts.poly(PALM, 0)  # no cut lines inside the palm
-	m.im.paste(0, (0, 0), cuts.im)
+	# A finger is outlined only where it lies over the fingers behind it (never against the palm).
+	for i, (seg, r) in enumerate(FINGERS[:-1]):
+		ring = Mask()
+		stroke(ring, seg, r + CUT / 2)
+		stroke(ring, seg, r, 0)
+		behind = Mask()
+		for seg2, r2 in FINGERS[i + 1:]:
+			stroke(behind, seg2, r2)
+		ring.im.paste(ImageChops.multiply(ring.im, behind.im))
+		ring.poly(shift(PALM), 0)
+		m.im.paste(0, (0, 0), ring.im)
 
-	# The orb floats in front of the fingers: clear a gap around it.
 	cx, cy, r = ORB
-	m.circle(cx, cy, r + 34, 0)
+	m.circle(cx, cy, r + 36, 0)
 	return m
+
+
+# ---- magic --------------------------------------------------------------------------------------
+
+def sparkle(m: "Mask", cx, cy, size):
+	"""A four-point star."""
+	pts = []
+	for k in range(8):
+		a = math.radians(-90 + k * 45)
+		r = size if k % 2 == 0 else size * 0.3
+		pts.append((cx + r * math.cos(a), cy + r * math.sin(a)))
+	m.poly(pts)
+
+
+def arc(m: "Mask", cx, cy, r, a0, a1, width):
+	pts = [(cx + r * math.cos(math.radians(a)), cy + r * math.sin(math.radians(a))) for a in range(int(a0), int(a1) + 1, 2)]
+	m.line(pts, width)
+
+
+def swirl(m: "Mask", cx, cy, r, a0, a1, width):
+	"""A comet-like arc that tapers from full width at a1 to a point at a0."""
+	n = 48
+	outer, inner = [], []
+	for i in range(n + 1):
+		t = i / n
+		a = math.radians(a0 + (a1 - a0) * t)
+		w = width * t ** 0.8 / 2
+		outer.append((cx + (r + w) * math.cos(a), cy + (r + w) * math.sin(a)))
+		inner.append((cx + (r - w) * math.cos(a), cy + (r - w) * math.sin(a)))
+	m.poly(outer + inner[::-1])
+	ex, ey = (outer[-1][0] + inner[-1][0]) / 2, (outer[-1][1] + inner[-1][1]) / 2
+	m.circle(ex, ey, width / 2)
+
+
+def magic(gold: "Mask"):
+	cx, cy, r = ORB
+	gold.circle(cx, cy, r)
+	swirl(gold, cx, cy, r + 26, 150, 300, 14)   # two swirls chasing each other round the orb
+	swirl(gold, cx, cy, r + 26, 330, 480, 14)
+	sparkle(gold, cx - 150, cy - 96, 28)
+	sparkle(gold, cx + 140, cy - 128, 20)
+	sparkle(gold, cx + 22, cy - 186, 13)
 
 
 # ---- ingredients spiralling into the orb --------------------------------------------------------
@@ -168,10 +223,10 @@ def flower(ink: Mask, gold: Mask, cx, cy):
 	gold.circle(cx, cy, 9)
 
 
-ITEMS = [  # (angle around the orb, distance) - all travelling clockwise into it
-	(-152, 248),   # leaf, upper left
-	(-30, 262),    # mushroom, upper right
-	(32, 258),     # flower, lower right
+ITEMS = [  # (angle around the spell, distance) - all spiralling clockwise into it
+	(-170, 270),   # leaf, left
+	(-64, 300),    # mushroom, above
+	(-10, 300),    # flower, right
 ]
 
 
@@ -179,10 +234,7 @@ def render(transparent: bool) -> Image.Image:
 	ink = hand()
 	gold = Mask()
 	trails = Mask()
-
-	cx, cy, r = ORB
-	gold.circle(cx, cy, r)
-	gold.ring(cx, cy, r + 17, 3)
+	magic(gold)
 
 	(la, lr), (ma, mr), (fa, fr) = ITEMS
 	for a, rad in ITEMS:
