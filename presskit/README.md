@@ -2,7 +2,7 @@
 
 Art and copy for the **IHarvest NG** Nexus page. Everything here is loose files. Nothing is zipped.
 
-![Header](nexus/ihng-banner-transparent-1920x480.png)
+![Header](nexus/ihng-banner-card.png)
 
 ## Copy-paste text
 
@@ -31,14 +31,13 @@ Upload these on the Nexus **Images** tab. Make the primary image the mod's **Pri
 
 ## Description images
 
-The BBCode file already uses these. They are **transparent**, so they sit on the Nexus page itself
-instead of in dark boxes (the background is taken back out of the finished art, so edges stay clean and
-faint lines become translucent).
+The BBCode file already uses these. Each is a dark **card**: rounded corners, a hairline border and a
+soft shadow on transparent margins, so the panels sit on the Nexus page like its own UI elements.
 
-| Image | Size | Use |
+| Image | Card size | Use |
 |---|---|---|
-| [`ihng-banner-transparent-1920x480.png`](nexus/ihng-banner-transparent-1920x480.png) | 1920×480 | Top of the description |
-| [`ihng-comparison-transparent-1600x660.png`](nexus/ihng-comparison-transparent-1600x660.png) | 1600×660 | Comparison under Features |
+| [`ihng-banner-card.png`](nexus/ihng-banner-card.png) | 1920×480 | Top of the description |
+| [`ihng-comparison-card.png`](nexus/ihng-comparison-card.png) | 1600×720 | Comparison under Features |
 | `section-01-…` to `section-08-…` | 1200×112 | Section headers |
 
 ![Features](nexus/section-01-features.png)
@@ -83,7 +82,7 @@ description and the Nexus credits box already carry it.
 | Type | Cinzel (titles), Jost (body) | Uppercase titles with wide letter spacing. Both SIL OFL, in `src/fonts/` |
 
 Keep it flat: no gradients, glows, textures, frames or extra colors. One idea per image, no taglines or spec badges.
-Images that go in the description are transparent; images uploaded to Nexus slots (header, primary, gallery) are opaque.
+Images in the description are rounded cards (see above); images uploaded to Nexus slots (header, primary, gallery) are plain opaque rectangles.
 The sparkle mark in the section headers is redrawn from the icon's spell.
 
 ## Rebuild

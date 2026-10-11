@@ -42,9 +42,8 @@ def render_svg(path: Path, px: int) -> Image.Image:
 			return im.convert("RGB").resize((px, px), Image.LANCZOS)
 
 
-def unmix(im: Image.Image, inks=INKS) -> Image.Image:
+def unmix(im: Image.Image) -> Image.Image:
 	"""Every pixel is some ink blended over BG: recover that ink and how much of it there is."""
-	INKS = inks  # noqa: N806 - the colours this image may contain
 	src = im.load()
 	out = Image.new("RGBA", im.size)
 	dst = out.load()

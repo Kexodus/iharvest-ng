@@ -19,7 +19,7 @@ import sys
 import math
 from pathlib import Path
 
-from PIL import Image, ImageChops, ImageDraw, ImageFont
+from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont
 
 ROOT = Path(__file__).resolve().parents[2]
 FONTS = Path(__file__).resolve().parent / "fonts"
@@ -95,12 +95,12 @@ class Canvas:
 				pts.append((self.s(cx + x * k), self.s(cy + y * k)))
 		self.d.polygon(pts, fill=GOLD)
 
-	def save(self, path: Path, palette: bool = True, transparent: bool = False):
+	def save(self, path: Path, palette: bool = True, card: int = 0):
+		"""card > 0: save as a description card - rounded corners of that radius, a hairline border and
+		a soft shadow on transparent margins, so the dark panel sits on the Nexus page like its own UI."""
 		out = self.img.resize((self.w, self.h), Image.BOX).convert("RGB")  # exact 2x: no ringing
-		if transparent:
-			# For the description: take the background back out so the image sits on the Nexus page
-			# itself. Faint lines come out as translucent dim ink, so they still read on its grey.
-			cutout().unmix(out, [INK, INK_DIM, GOLD]).save(path, optimize=True)
+		if card:
+			as_card(out, card).save(path, optimize=True)
 			return
 		if palette:
 			# Flat art: a 256-colour palette is visually lossless here and much smaller.
@@ -109,6 +109,33 @@ class Canvas:
 
 
 NAME = "IHARVEST NG"
+
+CARD_BORDER = (52, 51, 49)   # hairline round each card: just lighter than the panel, darker than the page
+SHADOW = 0.5                 # card shadow opacity on the page
+
+
+def as_card(img: Image.Image, radius: int) -> Image.Image:
+	w, h = img.size
+	k = 4  # supersampled corner mask
+	mask = Image.new("L", (w * k, h * k), 0)
+	ImageDraw.Draw(mask).rounded_rectangle([0, 0, w * k - 1, h * k - 1], radius * k, fill=255)
+	mask = mask.resize((w, h), Image.BOX)
+	border = Image.new("L", (w * k, h * k), 0)
+	ImageDraw.Draw(border).rounded_rectangle([0, 0, w * k - 1, h * k - 1], radius * k, outline=255, width=int(1.5 * k))
+	border = border.resize((w, h), Image.BOX)
+	panel = img.copy()
+	panel.paste(Image.new("RGB", (w, h), CARD_BORDER), (0, 0), border)
+	panel = panel.convert("RGBA")
+	panel.putalpha(mask)
+
+	margin = max(12, radius)
+	sheet = Image.new("RGBA", (w + 2 * margin, h + 2 * margin), (0, 0, 0, 0))
+	shadow = Image.new("L", sheet.size, 0)
+	shadow.paste(mask, (margin, margin + margin // 4))
+	shadow = shadow.filter(ImageFilter.GaussianBlur(margin / 2.2)).point(lambda v: int(v * SHADOW))
+	sheet.paste(Image.new("RGBA", sheet.size, (0, 0, 0, 255)), (0, 0), shadow)
+	sheet.alpha_composite(panel, (margin, margin))
+	return sheet
 
 _ICON = None
 
@@ -145,7 +172,7 @@ def header(out: Path):
 	c = Canvas(1920, 480)
 	lockup(c, 420, 90, 92, 0.14)
 	c.save(out / "ihng-header-1920x480.png", palette=False)                 # Nexus "Header image" slot
-	c.save(out / "ihng-banner-transparent-1920x480.png", transparent=True)  # top of the description
+	c.save(out / "ihng-banner-card.png", card=28)                            # top of the description
 
 
 def primary(out: Path):
@@ -191,9 +218,9 @@ def gallery_comparison(out: Path):
 
 
 def description_comparison(out: Path):
-	c = Canvas(1600, 660)
-	comparison(c, 70, 230, 170)
-	c.save(out / "ihng-comparison-transparent-1600x660.png", transparent=True)  # in the description
+	c = Canvas(1600, 720)
+	comparison(c, 112, 278, 170)
+	c.save(out / "ihng-comparison-card.png", card=28)                       # in the description
 
 
 SECTIONS = ["Features", "How It Works", "Requirements", "Installation", "Settings", "Compatibility", "FAQ", "Credits"]
@@ -203,9 +230,9 @@ def section_headers(out: Path):
 	f = font("Cinzel", 34)
 	for i, name in enumerate(SECTIONS, 1):
 		c = Canvas(1200, 112)
-		c.orb(40, c.h / 2, 20)
-		c.text(84, c.h / 2 + 1, name.upper(), f, INK, tracking=0.24, anchor="lm")
-		c.save(out / f"section-{i:02d}-{name.lower().replace(' ', '-')}.png", transparent=True)
+		c.orb(54, c.h / 2, 20)
+		c.text(98, c.h / 2 + 1, name.upper(), f, INK, tracking=0.24, anchor="lm")
+		c.save(out / f"section-{i:02d}-{name.lower().replace(' ', '-')}.png", card=22)
 
 
 def main():
