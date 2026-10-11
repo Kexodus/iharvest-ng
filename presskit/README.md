@@ -39,7 +39,8 @@ soft shadow on transparent margins, so the panels sit on the Nexus page like its
 |---|---|---|
 | [`ihng-banner-card.png`](nexus/ihng-banner-card.png) | 1920×480 | Top of the description |
 | [`ihng-comparison-card.png`](nexus/ihng-comparison-card.png) | 1600×720 | Comparison under Features |
-| `section-01-…` to `section-08-…` | 1200×112 | Section headers |
+| `section-01-…` to `section-11-…` | 1200×112 | Section headers. Numbers stay fixed once published; new sections take the next number |
+| [`ihng-divider-transparent-1200x40.png`](nexus/ihng-divider-transparent-1200x40.png) | 1200×40 | Divider above the closing GitHub link |
 
 ![Features](nexus/section-01-features.png)
 ![How it works](nexus/section-02-how-it-works.png)
@@ -184,11 +185,13 @@ First release.
 ### Permissions tab
 Credits (the "Credits" text box):
 ```text
-IDontEvenKnow - the original IHarvest (WTFPL): gameplay design, records, wisp meshes and sounds. Please endorse the original too.
-vh724 - iHarvest - Redux, the SkyPal-free rework of IHarvest.
-CommonLibSSE-NG contributors (alandtse, CharmedBaryon, powerofthree and others).
-Skoll - the open-palm hand in the icon (game-icons.net, CC BY 3.0).
-SKSE team, meh321 (Address Library), SKSE Menu Framework team.
+IDontEvenKnow: IHarvest, the original (WTFPL). All the gameplay design, records, wisp meshes and sounds are theirs.
+vh724: iHarvest - Redux, the SkyPal-free rework of IHarvest
+Skoll: the open-palm hand in the icon (game-icons.net, CC BY 3.0)
+SKSE team: SKSE64
+meh321: Address Library for SKSE Plugins
+Ryan McKenzie, CharmedBaryon, alandtse and contributors: CommonLibSSE-NG
+Thiago099 and QTR-Modding: SKSE Menu Framework
 ```
 Suggested toggles:
 - Upload to other sites, modify, convert, use assets: **Yes, with credit** (source is GPL-3.0)

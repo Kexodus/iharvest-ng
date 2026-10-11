@@ -114,35 +114,58 @@ No Menu Framework? Every option is in [i]Data/SKSE/Plugins/IHarvestNG.ini[/i], w
 
 [center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/presskit/nexus/section-07-faq.png[/img][/center]
 
-[spoiler]
-[b]Why is there still a plugin?[/b]
-The spell, tome and staff are things you own, so they have to exist in a plugin to survive in your save. SPID, SkyPatcher and similar tools can only distribute or patch records that already exist. The plugin is ESL-flagged (no load-order slot on SE/AE), has no scripts, overrides nothing, and is under 5 KB.
+[list]
+[*][b]Why is there still a plugin?[/b] The spell, tome and staff are things you own, so they have to exist in a plugin to survive in your save. SPID, SkyPatcher and similar tools can only distribute or patch records that already exist. The plugin is ESL-flagged (no load-order slot on SE/AE), has no scripts, overrides nothing, and is under 5 KB.
+[*][b]Does it work with modded ingredients?[/b] Yes. NG checks each object type in your game the first time it sees one, and anything that yields an ingredient gets harvested. If you add or remove ingredient mods mid-playthrough, click [i]Reset[/i] once.
+[*][b]A modded plant or critter isn't picked.[/b] Flora that only gives misc items (crafting materials, for example) is skipped by design, and food needs the Food option. Custom-scripted harvestables need explicit support, so post the mod name in the comments.
+[*][b]Can I make it faster?[/b] Raise [i]Flight speed[/i] (up to 20×), dual cast with the Alteration Dual Casting perk, and level Alteration and Alchemy.
+[*][b]My world map looks broken.[/b] IHarvest NG doesn't touch the world map. Its log has a line [i]Tamriel worldspace record ... edited by:[/i] that lists every plugin editing the map's settings, and the last one wins. With a 2D/paper map mod, its plugin (or its patch) has to be that last one.
+[/list]
 
-[b]Does it work with modded ingredients?[/b]
-Yes. NG checks each object type in your game the first time it sees one, and anything that yields an ingredient gets harvested. If you add or remove ingredient mods mid-playthrough, click [i]Reset[/i] once.
+[center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/presskit/nexus/section-09-changelog.png[/img][/center]
 
-[b]A modded plant or critter isn't picked.[/b]
-Flora that only gives misc items (crafting materials, for example) is skipped by design, and food needs the Food option. Custom-scripted harvestables need explicit support, so post the mod name in the comments.
+[b]1.0.7[/b]
+[list]
+[*]Wisps are no longer sent to targets they can't reach: searches stay within 10,000 units, and long or slow trips get the time they need instead of timing out.
+[*]Running out of magicka no longer restarts the cast every frame.
+[*]Tomes and staves are no longer placed under the loading screen.
+[*]A Spell Tome you drop yourself no longer vanishes; only the placed tomes do, as in the original.
+[*]Sturdier save data.
+[/list]
 
-[b]Can I make it faster?[/b]
-Raise [i]Flight speed[/i] (up to 20×), dual cast with the Alteration Dual Casting perk, and level Alteration and Alchemy.
+[b]1.0.6[/b]
+[list]
+[*]The log lists every plugin that edits the Tamriel worldspace (the world map's settings), to help with world map reports.
+[*]Tomes and staves are never placed while the game is paused.
+[/list]
 
-[b]My world map looks broken.[/b]
-IHarvest NG doesn't touch the world map. Its log has a line [i]Tamriel worldspace record ... edited by:[/i] that lists every plugin editing the map's settings, and the last one wins. With a 2D/paper map mod, its plugin (or its patch) has to be that last one.
+Full history: [url=https://github.com/Kexodus/iharvest-ng/blob/main/CHANGELOG.md]CHANGELOG on GitHub[/url]
 
-[b]Where's the log?[/b]
-Documents/My Games/Skyrim Special Edition/SKSE/IHarvestNG.log. Set the log level to "debug" under Diagnostics when reporting a bug.
-[/spoiler]
+[center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/presskit/nexus/section-10-support.png[/img][/center]
+
+Found a bug? Please include:
+[list]
+[*]Your Skyrim version (SE, AE or VR) and store (Steam or GOG)
+[*][font=Courier New]Documents/My Games/Skyrim Special Edition/SKSE/IHarvestNG.log[/font]
+[*]Which plant, critter or location it happened with, and any flora or harvesting mods you use
+[/list]
+For harvesting problems, set the log level to [i]debug[/i] (Diagnostics on the Menu Framework page, or [font=Courier New]iLogLevel = 1[/font] in [font=Courier New]IHarvestNG.ini[/font]), reproduce the problem, and attach the log. Bug reports go here or in [url=https://github.com/Kexodus/iharvest-ng/issues]GitHub Issues[/url].
+
+[center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/presskit/nexus/section-11-permissions.png[/img][/center]
+
+Free software under the GNU General Public License v3.0 or later, as CommonLibSSE-NG requires. You may share, modify and re-upload it, as long as your version stays GPL-3.0-or-later, links its source and keeps the credits. The records, meshes and sounds reused from the original IHarvest are under the WTFPL.
 
 [center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/presskit/nexus/section-08-credits.png[/img][/center]
 
 [list]
-[*][b]IDontEvenKnow[/b] made the original [url=https://www.nexusmods.com/skyrimspecialedition/mods/27789]IHarvest[/url]. All the gameplay design, records, wisp meshes and sounds are theirs, released under the WTFPL, and the mod is renamed as that license asks. Please endorse the original too.
-[*][b]vh724[/b] made [url=https://www.nexusmods.com/skyrimspecialedition/mods/177392]iHarvest - Redux[/url], the SkyPal-free rework of IHarvest. Give it an endorsement too.
-[*][b]Skoll[/b] drew the open-palm hand in the icon ([url=https://game-icons.net]game-icons.net[/url], [url=https://creativecommons.org/licenses/by/3.0/]CC BY 3.0[/url]).
-[*][b]CommonLibSSE-NG[/b] contributors (alandtse, CharmedBaryon, powerofthree and everyone else).
-[*]The [b]SKSE[/b] team, and [b]meh321[/b] for Address Library.
-[*]The [b]SKSE Menu Framework[/b] team.
+[*]IDontEvenKnow: [url=https://www.nexusmods.com/skyrimspecialedition/mods/27789]IHarvest[/url], the original. All the gameplay design, records, wisp meshes and sounds are theirs. Please endorse it too.
+[*]vh724: [url=https://www.nexusmods.com/skyrimspecialedition/mods/177392]iHarvest - Redux[/url], the SkyPal-free rework of IHarvest
+[*]Skoll: the open-palm hand in the icon ([url=https://github.com/game-icons/icons/blob/master/skoll/open-palm.svg]game-icons.net[/url], [url=https://creativecommons.org/licenses/by/3.0/]CC BY 3.0[/url])
+[*]SKSE team: [url=https://skse.silverlock.org/]SKSE64[/url]
+[*]meh321: [url=https://www.nexusmods.com/skyrimspecialedition/mods/32444]Address Library for SKSE Plugins[/url]
+[*]Ryan McKenzie, CharmedBaryon, alandtse and contributors: [url=https://github.com/alandtse/CommonLibSSE-NG]CommonLibSSE-NG[/url]
+[*]Thiago099 and QTR-Modding: [url=https://www.nexusmods.com/skyrimspecialedition/mods/120352]SKSE Menu Framework[/url]
 [/list]
 
-[b]Source code:[/b] [url=https://github.com/Kexodus/iharvest-ng]github.com/Kexodus/iharvest-ng[/url]. IHarvest NG's code is GPL-3.0, and the reused original IHarvest assets are WTFPL. Bug reports and pull requests are welcome.
+[center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/presskit/nexus/ihng-divider-transparent-1200x40.png[/img]
+[url=https://github.com/Kexodus/iharvest-ng]github.com/Kexodus/iharvest-ng[/url][/center]

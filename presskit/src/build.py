@@ -240,12 +240,24 @@ def description_comparison(out: Path):
 	c.save(out / "ihng-comparison-card.png", card=28)                       # in the description
 
 
-SECTIONS = ["Features", "How It Works", "Requirements", "Installation", "Settings", "Compatibility", "FAQ", "Credits"]
+# File numbers are kept once published (a live description links them); new sections get the next number.
+SECTIONS = [(1, "Features"), (2, "How It Works"), (3, "Requirements"), (4, "Installation"), (5, "Settings"),
+            (6, "Compatibility"), (7, "FAQ"), (8, "Credits"), (9, "Changelog"), (10, "Support"), (11, "Permissions")]
+
+
+def divider(out: Path):
+	"""Transparent rule with the icon's sparkle, above the GitHub link that closes the description."""
+	c = Canvas(1200, 40)
+	c.line(330, 20, 570, 20)
+	c.line(630, 20, 870, 20)
+	c.orb(600, 20, 12)
+	out_img = c.img.resize((c.w, c.h), Image.BOX).convert("RGB")
+	cutout().unmix(out_img).save(out / "ihng-divider-transparent-1200x40.png", optimize=True)
 
 
 def section_headers(out: Path):
 	f = font("Cinzel", 34)
-	for i, name in enumerate(SECTIONS, 1):
+	for i, name in SECTIONS:
 		c = Canvas(1200, 112)
 		c.orb(54, c.h / 2, 20)
 		c.text(98, c.h / 2 + 1, name.upper(), f, INK, tracking=0.24, anchor="lm")
@@ -265,6 +277,7 @@ def main():
 	gallery_comparison(args.out)
 	description_comparison(args.out)
 	section_headers(args.out)
+	divider(args.out)
 	for p in sorted(args.out.glob("*.png")):
 		with Image.open(p) as im:
 			print(f"{p.name:40s} {im.size[0]}x{im.size[1]}  {p.stat().st_size // 1024} KB")
