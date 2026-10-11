@@ -1,9 +1,8 @@
 [center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/docs/nexus/images/banner-min.png[/img]
 
-[size=4][i]Cast [b]Harvest[/b] and little wisps fly out, pick every ingredient around you, and bring it back.
-The IHarvest you know, rebuilt from scratch as a native SKSE plugin. No scripts, no quests, no conflicts.[/i][/size]
+[size=4][i]Cast [b]Harvest[/b] and wisps pick every ingredient around you.[/i][/size]
 
-[size=3][b]One DLL for Skyrim SE 1.5.97  •  AE 1.6.x (including 1.6.1130+)  •  Skyrim VR[/b][/size][/center]
+The IHarvest you know, rebuilt as a native SKSE plugin.[/center]
 
 [line]
 
@@ -28,7 +27,7 @@ The IHarvest you know, rebuilt from scratch as a native SKSE plugin. No scripts,
 
 [b]Getting the spell[/b]
 [list]
-[*][b]Spell Tome: Harvest[/b] is hidden in the original's 18 locations across Skyrim, Solstheim, Blackreach and the Soul Cairn. Once you know the spell, most of the remaining tomes quietly vanish as you find them.
+[*][b]Spell Tome: Harvest[/b] is hidden in the original's 18 locations across Skyrim, Solstheim, Blackreach and the Soul Cairn. Once you've read one, most of the remaining tomes quietly vanish as you find them.
 [*]The [b]Staff of Harvest[/b] can be found in 4 places, or crafted at a Solstheim staff enchanter.
 [/list]
 
@@ -108,6 +107,7 @@ No Menu Framework? Every option is in [i]Data/SKSE/Plugins/IHarvestNG.ini[/i], w
 [list]
 [*][b]Compatible with everything[/b] that doesn't also give you an IHarvest spell. The plugin adds new records only and touches nothing vanilla.
 [*][b]Flora overhauls and new ingredient mods[/b] work automatically.
+[*][b]Perk overhauls[/b] (Adamant, Ordinator and others): their Green Thumb ranks apply, because wisps harvest as you.
 [*][b]Not compatible with the original IHarvest[/b] or its Redux/Improved versions. Use one or the other.
 [*][b]VR:[/b] the DLL supports VR, and every engine address it uses is verified against the VR Address Library. Feedback from VR players is very welcome.
 [/list]
@@ -126,6 +126,9 @@ Flora that only gives misc items (crafting materials, for example) is skipped by
 
 [b]Can I make it faster?[/b]
 Raise [i]Flight speed[/i] (up to 20×), dual cast with the Alteration Dual Casting perk, and level Alteration and Alchemy.
+
+[b]My world map looks broken.[/b]
+IHarvest NG doesn't touch the world map. Its log has a line [i]Tamriel worldspace record ... edited by:[/i] that lists every plugin editing the map's settings, and the last one wins. With a 2D/paper map mod, its plugin (or its patch) has to be that last one.
 
 [b]Where's the log?[/b]
 Documents/My Games/Skyrim Special Edition/SKSE/IHarvestNG.log. Set the log level to "debug" under Diagnostics when reporting a bug.
