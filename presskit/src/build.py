@@ -95,12 +95,12 @@ class Canvas:
 				pts.append((self.s(cx + x * k), self.s(cy + y * k)))
 		self.d.polygon(pts, fill=GOLD)
 
-	def save(self, path: Path, palette: bool = True, card: int = 0):
+	def save(self, path: Path, palette: bool = True, card: int = 0, keep_size: bool = False):
 		"""card > 0: save as a description card - rounded corners of that radius, a hairline border and
 		a soft shadow on transparent margins, so the dark panel sits on the Nexus page like its own UI."""
 		out = self.img.resize((self.w, self.h), Image.BOX).convert("RGB")  # exact 2x: no ringing
 		if card:
-			as_card(out, card).save(path, optimize=True)
+			as_card(out, card, keep_size).save(path, optimize=True)
 			return
 		if palette:
 			# Flat art: a 256-colour palette is visually lossless here and much smaller.
@@ -114,7 +114,13 @@ CARD_BORDER = (52, 51, 49)   # hairline round each card: just lighter than the p
 SHADOW = 0.5                 # card shadow opacity on the page
 
 
-def as_card(img: Image.Image, radius: int) -> Image.Image:
+def as_card(img: Image.Image, radius: int, keep_size: bool = False) -> Image.Image:
+	"""keep_size: the finished file keeps img's exact size (Nexus upload slots expect it); the panel is
+	scaled down slightly to make room for the shadow margin."""
+	margin = max(12, radius)
+	out_w, out_h = img.size
+	if keep_size:
+		img = img.resize((out_w - 2 * margin, out_h - 2 * margin), Image.LANCZOS)
 	w, h = img.size
 	k = 4  # supersampled corner mask
 	mask = Image.new("L", (w * k, h * k), 0)
@@ -128,7 +134,6 @@ def as_card(img: Image.Image, radius: int) -> Image.Image:
 	panel = panel.convert("RGBA")
 	panel.putalpha(mask)
 
-	margin = max(12, radius)
 	sheet = Image.new("RGBA", (w + 2 * margin, h + 2 * margin), (0, 0, 0, 0))
 	shadow = Image.new("L", sheet.size, 0)
 	shadow.paste(mask, (margin, margin + margin // 4))
@@ -171,14 +176,14 @@ def lockup(c: Canvas, icon_h: float, gap: float, size: int, tracking: float):
 def header(out: Path):
 	c = Canvas(1920, 480)
 	lockup(c, 420, 90, 92, 0.14)
-	c.save(out / "ihng-header-1920x480.png", palette=False)                 # Nexus "Header image" slot
+	c.save(out / "ihng-header-1920x480.png", card=28, keep_size=True)       # Nexus "Header image" slot
 	c.save(out / "ihng-banner-card.png", card=28)                            # top of the description
 
 
 def primary(out: Path):
 	c = Canvas(1920, 1080)
 	lockup(c, 860, 120, 104, 0.12)
-	c.save(out / "ihng-primary-1920x1080.png", palette=False)
+	c.save(out / "ihng-primary-1920x1080.png", card=36, keep_size=True)
 
 
 ROWS = [
@@ -214,7 +219,7 @@ def comparison(c: Canvas, ty: float, top: float, rule_inset: float):
 def gallery_comparison(out: Path):
 	c = Canvas(1920, 1080)
 	comparison(c, 250, 420, 330)
-	c.save(out / "ihng-gallery-comparison-1920x1080.png")             # Images tab
+	c.save(out / "ihng-gallery-comparison-1920x1080.png", card=36, keep_size=True)  # Images tab
 
 
 def description_comparison(out: Path):

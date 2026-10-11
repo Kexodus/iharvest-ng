@@ -82,7 +82,7 @@ description and the Nexus credits box already carry it.
 | Type | Cinzel (titles), Jost (body) | Uppercase titles with wide letter spacing. Both SIL OFL, in `src/fonts/` |
 
 Keep it flat: no gradients, glows, textures, frames or extra colors. One idea per image, no taglines or spec badges.
-Images in the description are rounded cards (see above); images uploaded to Nexus slots (header, primary, gallery) are plain opaque rectangles.
+Every image is a rounded dark card with a hairline border and a soft shadow, so it sits on the Nexus page like its own UI. Upload-slot images (header, primary, gallery) keep their exact sizes; the card is drawn inside them.
 The sparkle mark in the section headers is redrawn from the icon's spell.
 
 ## Rebuild
