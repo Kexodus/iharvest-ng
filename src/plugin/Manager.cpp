@@ -4,6 +4,8 @@
 #include "Log.h"
 #include "Placements.h"
 
+#include <format>
+
 namespace ihng
 {
 	namespace
@@ -557,13 +559,17 @@ namespace ihng
 		}
 		_placed.insert(static_cast<std::uint32_t>(a_index));
 		_pendingKeyframe.emplace_back(ref->GetFormID(), 0.0f);
-		logger::info("Placed {} ({:08X}) in {}", r.base->GetName(), ref->GetFormID(), r.cell->GetFormEditorID());
+		logger::info("Placed {} ({:08X}) in {} [{:08X}]{}", r.base->GetName(), ref->GetFormID(), r.cell->GetFormEditorID(), r.cell->GetFormID(),
+			r.world ? std::format(" world {:08X}", r.world->GetFormID()) : std::string{});
 	}
 
 	void Manager::OnCellLoaded(RE::TESObjectCELL* a_cell)
 	{
 		if (!a_cell || !a_cell->IsAttached()) {
 			return;  // stale event (e.g. queued just before a save load)
+		}
+		if (auto* ui = RE::UI::GetSingleton(); ui && ui->GameIsPaused()) {
+			return;  // never create references under a menu (map, loading); the poll places it once unpaused
 		}
 		const auto defs = placements::All();
 		for (std::size_t i = 0; i < defs.size(); ++i) {

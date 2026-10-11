@@ -74,17 +74,22 @@ namespace ihng
 			return;
 		}
 		std::string offenders;
+		std::string chain;
 		for (const auto* file : *files) {
 			if (!file) {
 				continue;
 			}
 			std::string name{ file->GetFilename() };
+			chain += chain.empty() ? name : " > " + name;
 			std::string lower = name;
 			std::ranges::transform(lower, lower.begin(), [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
 			if (lower.find("iharvest") != std::string::npos) {
 				offenders += offenders.empty() ? name : ", " + name;
 			}
 		}
+		// The world map's camera and bounds come from the last file in this list - logged so a broken map
+		// can be traced to the plugin that actually wins.
+		logger::info("Forms: Tamriel worldspace record (map camera/bounds) edited by: {}", chain);
 		if (offenders.empty()) {
 			logger::info("Forms: no IHarvest plugin overrides the Tamriel worldspace");
 			return;

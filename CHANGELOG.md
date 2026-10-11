@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.6 (2026-10-10)
+
+- The log now lists every plugin that edits the Tamriel worldspace record, which holds the world map's
+  camera and bounds (`Forms: Tamriel worldspace record ... edited by: ...`). The last file listed
+  decides how the map behaves; send this line when reporting world map problems.
+- Spell Tomes / Staves are never placed while the game is paused (map, menus); they are placed within a
+  second of returning to the game. Placement log lines now include the cell and worldspace IDs.
+
 ## 1.0.5 (2026-10-10)
 
 - **New: warns when an old IHarvest plugin breaks the world map.** The 1.0.0 `IHarvestNG.esp` (and the
