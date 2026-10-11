@@ -15,17 +15,18 @@ Every other field is under [Nexus fields](#nexus-fields) below, one copy box eac
 
 ## Nexus page images
 
-Upload these on the Nexus **Images** tab. Make the primary image the mod's **Primary image**.
+Upload these on the Nexus **Images** tab. Set the thumbnail as the mod's **Primary image**: Nexus uses it for the mod tile in browse lists and search.
 
 | Image | Size | Use |
 |---|---|---|
-| [`ihng-primary-1920x1080.png`](nexus/ihng-primary-1920x1080.png) | 1920×1080 | Primary image / thumbnail |
+| [`ihng-thumbnail-1280x720.png`](nexus/ihng-thumbnail-1280x720.png) | 1280×720 | **Primary image** (mod-tile thumbnail). Full-bleed, no card: tiles are cropped to fill and round their own corners. Icon and name stacked and large enough to read at tile size, inside a centre-safe area |
+| [`ihng-primary-1920x1080.png`](nexus/ihng-primary-1920x1080.png) | 1920×1080 | Gallery: icon and name |
 | [`ihng-gallery-comparison-1920x1080.png`](nexus/ihng-gallery-comparison-1920x1080.png) | 1920×1080 | Gallery: original IHarvest vs NG |
 | [`ihng-header-1920x480.png`](nexus/ihng-header-1920x480.png) | 1920×480 | Nexus **Header image** slot |
 | [`ihng-icon-minimal-1024.png`](logo/ihng-icon-minimal-1024.png) | 1024×1024 | Optional gallery image: the icon on its own |
 
 <p>
-  <img src="nexus/ihng-primary-1920x1080.png" width="49%">
+  <img src="nexus/ihng-thumbnail-1280x720.png" width="49%">
   <img src="nexus/ihng-gallery-comparison-1920x1080.png" width="49%">
 </p>
 

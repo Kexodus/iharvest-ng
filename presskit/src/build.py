@@ -186,6 +186,18 @@ def primary(out: Path):
 	c.save(out / "ihng-primary-1920x1080.png", card=36, keep_size=True)
 
 
+def thumbnail(out: Path):
+	"""Nexus "Primary image": the mod-tile thumbnail. Full-bleed and opaque (tiles are cropped to fill and
+	round their own corners, so no card), icon and name large enough to read at tile size (~320x180),
+	everything inside the centre ~85% so a crop can't cut it."""
+	c = Canvas(1280, 720)
+	icon_h = 500  # stacked: icon centred, name under it - reads best at tile size
+	iw = c.icon_width(icon_h)
+	c.icon((c.w - iw) / 2, 48, icon_h)
+	c.text(c.w / 2, 620, NAME, font("Cinzel", 70), INK, tracking=0.16)
+	c.save(out / "ihng-thumbnail-1280x720.png", palette=False)
+
+
 ROWS = [
 	("Papyrus scripts and quests", "No scripts"),
 	("Needs patches", "No patches"),
@@ -249,6 +261,7 @@ def main():
 		old.unlink()
 	header(args.out)
 	primary(args.out)
+	thumbnail(args.out)
 	gallery_comparison(args.out)
 	description_comparison(args.out)
 	section_headers(args.out)
