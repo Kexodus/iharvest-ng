@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.0.7 (2026-10-11)
+
+- **Fix: wisps sent to targets they could never reach.** The search radius (up to ~32,000 units with
+  a high Search radius multiplier) is now capped at 10,000, inside the 12,000-unit range at which a wisp
+  vanishes. Long or slow trips (low Flight speed multiplier) get a longer lifetime instead of timing
+  out at 25 s. Before, both cases cost magicka and XP for every wisp without harvesting anything.
+- **Fix:** running out of magicka (or staff charge) no longer restarts the cast every frame while the
+  effect is still winding down.
+- **Fix:** Spell Tomes / Staves are no longer placed under the loading screen right after a save loads;
+  the once-a-second check places them as soon as you're back in control.
+- **Fix:** a Spell Tome you drop yourself no longer has an 80% chance to vanish; only the placed tomes
+  (recognised by their exact spot) roll, as in the original.
+- Harvestable types are only learned from loaded, enabled references, so an unloaded one can't mark a
+  whole plant type "not harvestable" until Reset.
+- The save now records placed tomes/staves by a stable id instead of a table position (old saves are
+  read as before), and ignores a corrupt co-save's impossible item counts. Quitting with wisps in flight
+  no longer touches the game during shutdown.
+
 ## 1.0.6 (2026-10-10)
 
 - The log now lists every plugin that edits the Tamriel worldspace record, which holds the world map's

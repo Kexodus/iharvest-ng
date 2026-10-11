@@ -6,6 +6,11 @@
 
 namespace ihng::core
 {
+	// A wisp further than this from its caster vanishes (caster ran off / teleported).
+	inline constexpr float kLeashDistance = 12000.0f;
+	// Searches never look further than a wisp can fly without hitting the leash (margin for the arc).
+	inline constexpr float kMaxSearchRadius = kLeashDistance - 2000.0f;
+
 	// Wisp flight tuning. Speeds are world units/second. Defaults mirror the original Getter Critter:
 	// 1000 u/s movement type, a 500 u/s launch burst 320 units out and 64 up, a stop 96 units short of
 	// the target followed by a slow 250 u/s "picking" dive, and a return to ~192 units from the caster.
@@ -25,7 +30,8 @@ namespace ihng::core
 		float arcFactor{ 0.15f };         // arc height as a fraction of the leg's length...
 		float minArc{ 32.0f };            // ...clamped to [minArc, maxArc]
 		float maxArc{ 256.0f };
-		float maxLifetime{ 25.0f };       // hard cap; the wisp despawns wherever it is
+		float maxLifetime{ 25.0f };       // hard cap; the wisp despawns wherever it is (raised per
+		                                  // flight for long or slow trips, see Flight::Begin)
 		float maxLaunchOffset{ 2.44346f };  // 140 deg: never launch straight back into the caster's face
 		float minLaunchOffsetBehind{ 0.69813f };  // 40 deg: when spawning behind the caster
 		float speedMult{ 1.0f };          // user multiplier on all travel speeds

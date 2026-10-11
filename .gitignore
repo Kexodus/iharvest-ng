@@ -7,3 +7,4 @@ CMakeUserPresets.json
 *.user
 __pycache__/
 /release/
+*.log

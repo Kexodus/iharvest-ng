@@ -103,6 +103,7 @@ namespace ihng
 		std::vector<RE::ActorHandle>       _pendingWatch;
 
 		std::vector<RE::ActorHandle>          _watched;  // NPC casters (player is always checked)
+		std::vector<std::pair<RE::ActorHandle, bool>> _exhausted;  // (caster, staff) that ran dry; no restart until the effect ends
 		std::vector<Session>                  _sessions;
 		std::vector<std::unique_ptr<Wisp>>    _wisps;
 		std::unordered_set<RE::FormID>        _claimed;       // targets a wisp is currently fetching

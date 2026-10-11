@@ -41,6 +41,26 @@ namespace
 	}
 }
 
+TEST_CASE("A far target at the slowest speed is reached before the lifetime cap", "[flight]")
+{
+	// The furthest a search can reach, at speedMult 0.25 (250 u/s): ~80 s round trip, far beyond 25 s.
+	FlightWorld  world{ .casterPoint = { 0, 0, 100 }, .targetPoint = { 0, kMaxSearchRadius, 20 }, .targetValid = true, .returnRadius = 192 };
+	FlightTuning tuning;
+	tuning.speedMult = 0.25f;
+	Flight f;
+	f.Begin(tuning, { 0, 192, 40 }, 0.0f, false, world);
+
+	const auto r = Fly(f, world, 1.0f / 30.0f, 400.0f);
+	CHECK(r.harvested);
+	CHECK(r.done);
+	CHECK_FALSE(r.timedOut);
+}
+
+TEST_CASE("Searches stay inside the wisp leash", "[flight]")
+{
+	CHECK(kMaxSearchRadius < kLeashDistance);
+}
+
 TEST_CASE("A wisp flies out, harvests exactly once, and comes back", "[flight]")
 {
 	FlightWorld world{ .casterPoint = { 0, 0, 100 }, .targetPoint = { 0, 1200, 20 }, .targetValid = true, .returnRadius = 192 };
@@ -101,9 +121,11 @@ TEST_CASE("Flights always end, even with an unreachable target", "[flight]")
 	FlightWorld world{ .casterPoint = { 0, 0, 100 }, .targetPoint = { 0, 100000, 0 }, .targetValid = true };
 	Flight      f;
 	f.Begin(t, { 0, 192, 40 }, 0.0f, false, world);
-	const auto r = Fly(f, world);
+	// The cap scales with the trip but never past the leash: 10 + 3 * 12000 / 100 = 370 s here.
+	const auto r = Fly(f, world, 1.0f / 30.0f, 400.0f);
 	CHECK(r.done);
 	CHECK(r.timedOut);
+	CHECK(r.doneTime <= 10.0f + 3.0f * kLeashDistance / (t.cruiseSpeed * t.speedMult) + 0.1f);
 }
 
 TEST_CASE("Launch never heads straight back through the caster", "[flight]")

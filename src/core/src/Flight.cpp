@@ -24,6 +24,12 @@ namespace ihng::core
 		const Vec3  toTarget = a_world.targetPoint - a_spawn;
 		const float dist = toTarget.Length();
 
+		// The cap must outlast the round trip: a far target at a low speed multiplier can need far more
+		// than 25 s, and timing out there costs magicka for nothing, every refire. Bounded by the leash
+		// (nothing further is ever reachable), so every flight still ends.
+		const float trip = std::min(dist, kLeashDistance);
+		_t.maxLifetime = std::max(_t.maxLifetime, 10.0f + 3.0f * trip / (_t.cruiseSpeed * _t.speedMult));
+
 		// Launch direction: towards the target, but never more than 140 deg off the caster's facing (or,
 		// when spawning behind the caster, at least 40 deg off it) so wisps fan out instead of flying
 		// through the caster. Same rule as the original's SplineTranslateTo launch.

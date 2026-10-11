@@ -42,7 +42,7 @@ IHarvest NG
 
 ## 3. Version
 ```text
-1.0.6
+1.0.7
 ```
 
 ## 4. Category
@@ -214,7 +214,7 @@ Documents/My Games/Skyrim Special Edition/SKSE/IHarvestNG.log. Set the log level
 
 ## 8. Files tab: main file
 
-**Upload:** [IHarvest.NG.zip](https://github.com/Kexodus/iharvest-ng/releases/download/v1.0.6/IHarvest.NG.zip) (GitHub shows the space as a dot; rename it to `IHarvest NG.zip` if you like). Category: *Main Files*.
+**Upload:** [IHarvest.NG.zip](https://github.com/Kexodus/iharvest-ng/releases/download/v1.0.7/IHarvest.NG.zip) (GitHub shows the space as a dot; rename it to `IHarvest NG.zip` if you like). Category: *Main Files*.
 
 File name:
 ```text
@@ -222,7 +222,7 @@ IHarvest NG
 ```
 File version:
 ```text
-1.0.6
+1.0.7
 ```
 File description:
 ```text
@@ -239,6 +239,10 @@ Add these as requirements (search by name or ID):
 | SKSE Menu Framework | 120352 | `Optional - in-game settings page (INI otherwise)` |
 
 ## 10. Changelog tab
+Version `1.0.7`:
+```text
+Fixed wisps being sent to targets they could never reach (high search radius or low flight speed cost magicka for nothing). Fixed the cast restarting every frame when out of magicka. Tomes/staves are no longer placed under the loading screen. A Spell Tome you drop yourself no longer vanishes. Sturdier save data.
+```
 Version `1.0.6`:
 ```text
 Diagnostics for world map reports: the log lists every plugin that edits the Tamriel worldspace (map camera/bounds). Tomes and staves are no longer placed while the game is paused.

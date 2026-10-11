@@ -69,10 +69,9 @@ namespace ihng
 		return wisp;
 	}
 
-	Wisp::~Wisp()
-	{
-		Despawn(false);
-	}
+	// Never touches the game: the last wisps can be destroyed during static destruction / DLL unload,
+	// when the engine's handle tables may be gone. Every live removal path calls Despawn() or Forget().
+	Wisp::~Wisp() = default;
 
 	core::FlightWorld Wisp::World(RE::Actor* a_caster, RE::TESObjectREFR* a_target, const Config& a_config) const
 	{
@@ -111,7 +110,7 @@ namespace ihng
 		if (!caster || caster->IsDead() || !caster->GetParentCell() || !ref->GetParentCell() ||
 			caster->GetParentCell()->IsInteriorCell() != ref->GetParentCell()->IsInteriorCell() ||
 			(caster->GetParentCell()->IsInteriorCell() && caster->GetParentCell() != ref->GetParentCell()) ||
-			caster->GetWorldspace() != ref->GetWorldspace() || ref->GetPosition().GetDistance(caster->GetPosition()) > 12000.0f) {
+			caster->GetWorldspace() != ref->GetWorldspace() || ref->GetPosition().GetDistance(caster->GetPosition()) > core::kLeashDistance) {
 			// Caster gone, loaded through a door, or fast travelled: vanish quietly.
 			Despawn(false);
 			return false;

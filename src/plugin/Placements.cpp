@@ -28,6 +28,16 @@ namespace ihng::placements
 		return kAll;
 	}
 
+	std::optional<std::size_t> IndexOfKey(RE::FormID a_key) noexcept
+	{
+		for (std::size_t i = 0; i < std::size(kAll); ++i) {
+			if (kAll[i].key == a_key) {
+				return i;
+			}
+		}
+		return std::nullopt;
+	}
+
 	void Resolve(std::string_view a_pluginName)
 	{
 		std::size_t ok = 0;

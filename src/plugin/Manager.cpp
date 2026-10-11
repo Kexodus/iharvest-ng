@@ -23,6 +23,32 @@ namespace ihng
 			return a_ref ? a_ref->As<RE::Actor>() : nullptr;
 		}
 
+		// Only loaded, enabled references are classified: an unloaded one may not have its scripts bound
+		// yet, and its base would be cached as "not harvestable" until a manual Reset.
+		bool IsLive(const RE::TESObjectREFR* a_ref)
+		{
+			return !a_ref->IsDisabled() && !a_ref->IsDeleted() && a_ref->Is3DLoaded();
+		}
+
+		// Is this reference one of our runtime placements (Placements.inl), i.e. at its spot in its cell?
+		bool IsAtPlacement(const RE::TESObjectREFR* a_ref)
+		{
+			constexpr float kTolerance = 32.0f;  // placements are keyframed; allow for a settle before that
+			const auto*     cell = a_ref->GetParentCell();
+			const auto*     world = a_ref->GetWorldspace();
+			const auto      defs = placements::All();
+			for (std::size_t i = 0; i < defs.size(); ++i) {
+				const auto& r = placements::Get(i);
+				// Exteriors match by worldspace: a persistent exterior ref can report the worldspace's
+				// persistent cell as its parent rather than the grid cell it was placed in.
+				const bool here = r.world ? world == r.world : (cell && cell == r.cell);
+				if (here && a_ref->GetPosition().GetDistance(defs[i].pos) <= kTolerance) {
+					return true;
+				}
+			}
+			return false;
+		}
+
 		bool IsHarvestStaff(const RE::TESForm* a_form)
 		{
 			const auto& forms = Forms::Get();
@@ -164,6 +190,13 @@ namespace ihng
 	void Manager::SyncSession(RE::Actor* a_actor, bool a_staff, RE::ActiveEffect* a_effect)
 	{
 		const auto handle = a_actor->GetHandle();
+		const auto exhausted = std::ranges::find_if(_exhausted, [&](const auto& e) { return e.first == handle && e.second == a_staff; });
+		if (exhausted != _exhausted.end()) {
+			if (a_effect) {
+				return;  // ran out of magicka/charge: wait for this effect to end before starting again
+			}
+			_exhausted.erase(exhausted);
+		}
 		auto it = std::ranges::find_if(_sessions, [&](const Session& s) { return s.alive && s.staff == a_staff && s.caster == handle; });
 		if (a_effect && it == _sessions.end()) {
 			StartSession(a_actor, a_staff, a_effect);
@@ -193,7 +226,7 @@ namespace ihng
 		s.tuning = a_staff ? &core::kStaffTuning : &core::kSpellTuning;
 		const auto params = core::ComputeCastParams(*s.tuning, alteration, alchemy, dual);
 		s.clock = core::SpawnClock(params);
-		s.radius = params.radius * _config.radiusMult;
+		s.radius = std::min(params.radius * _config.radiusMult, core::kMaxSearchRadius);
 		s.cost = core::ComputeWispCost(*s.tuning, a_staff ? _config.staffChargePerWisp : _config.magickaCostPerWisp,
 			av->GetActorValue(RE::ActorValue::kAlterationModifier));
 		if (a_staff) {
@@ -223,10 +256,14 @@ namespace ihng
 		std::erase_if(_watched, [&](const RE::ActorHandle& h) {
 			const auto actor = h.get();
 			if (!actor || actor->IsDead() || !actor->Is3DLoaded() || !_config.allowNPCCasters) {
+				std::erase_if(_exhausted, [&](const auto& e) { return e.first == h; });
 				return true;
 			}
 			check(actor.get());
 			const bool stillCasting = std::ranges::any_of(_sessions, [&](const Session& s) { return s.alive && s.caster == h; });
+			if (!stillCasting) {
+				std::erase_if(_exhausted, [&](const auto& e) { return e.first == h; });  // a recast watches them again
+			}
 			return !stillCasting;
 		});
 
@@ -281,7 +318,7 @@ namespace ihng
 		const auto origin = a_caster->GetPosition();
 		const bool owned = _config.respectOwnership;
 		RE::TES::GetSingleton()->ForEachReferenceInRange(a_caster, a_session.radius, [&](RE::TESObjectREFR* a_ref) {
-			if (!a_ref || a_ref == a_caster || a_ref->GetFormType() == RE::FormType::ActorCharacter) {
+			if (!a_ref || a_ref == a_caster || a_ref->GetFormType() == RE::FormType::ActorCharacter || !IsLive(a_ref)) {
 				return RE::BSContainer::ForEachResult::kContinue;
 			}
 			const auto kind = harvest::Classify(a_ref, _rules);
@@ -311,7 +348,7 @@ namespace ihng
 			while (!a_session.cache.empty()) {
 				const auto ref = a_session.cache.back().get();
 				a_session.cache.pop_back();
-				if (!ref || IsClaimedOrIgnored(ref->GetFormID())) {
+				if (!ref || IsClaimedOrIgnored(ref->GetFormID()) || !IsLive(ref.get())) {
 					continue;
 				}
 				const auto kind = harvest::Classify(ref.get(), _rules);
@@ -360,6 +397,7 @@ namespace ihng
 					a_caster->InterruptCast(false);
 				}
 				a_session.alive = false;
+				_exhausted.emplace_back(a_caster->GetHandle(), a_session.staff);
 			}
 			return core::AttemptResult::kNeutral;
 		}
@@ -500,8 +538,14 @@ namespace ihng
 		}
 
 		if (base == forms.spellTome) {
-			// IH_SpellbookScript: tomes are placed generously by hand, so once you know the spell most
-			// of them quietly vanish when you come across them (each one is only ever rolled once).
+			// IH_SpellbookScript: tomes are placed generously by hand, so once you have read one, most of
+			// the placed ones quietly vanish when you come across them (each one is only ever rolled once).
+			// Placed tomes only, never one the player dropped. Ours are runtime refs too, so recognise them
+			// by where they are: keyframed at a placement's exact spot in its cell (this also covers tomes
+			// placed by earlier versions, and needs nothing in the save).
+			if (a_ref->IsDynamicForm() && !IsAtPlacement(a_ref)) {
+				return;
+			}
 			if (!_processedTomes.insert(a_ref->GetFormID()).second) {
 				return;
 			}
@@ -671,6 +715,7 @@ namespace ihng
 		_wisps.clear();
 		_sessions.clear();
 		_watched.clear();
+		_exhausted.clear();
 		_claimed.clear();
 		_ignoredUntil.clear();
 		_processedTomes.clear();
@@ -687,7 +732,10 @@ namespace ihng
 	void Manager::OnPostLoad()
 	{
 		logger::info("Placements: {}/{} already placed in this save", _placed.size(), placements::All().size());
-		PlaceInAttachedCells();
+		// Usually still under the loading screen here: leave placing to the 1 s poll, which only runs unpaused.
+		if (auto* ui = RE::UI::GetSingleton(); !ui || !ui->GameIsPaused()) {
+			PlaceInAttachedCells();
+		}
 
 		// The staff's harvesting ability should never outlive the staff (e.g. a save made mid-toggle
 		// with the staff later removed by another mod).
