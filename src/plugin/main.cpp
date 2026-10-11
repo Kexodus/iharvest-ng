@@ -36,6 +36,7 @@ namespace
 			ihng::ui::Register();
 			break;
 		case SKSE::MessagingInterface::kDataLoaded:
+			ihng::Forms::Get().CheckWorldOverrides();
 			if (ihng::Forms::Get().Resolve()) {
 				ihng::placements::Resolve(ihng::Forms::Get().pluginName);
 				ihng::events::Register();
@@ -43,6 +44,10 @@ namespace
 			break;
 		case SKSE::MessagingInterface::kPostLoadGame:
 		case SKSE::MessagingInterface::kNewGame:
+			if (static bool warned = false; !warned && !ihng::Forms::Get().WorldOverrideWarning().empty()) {
+				warned = true;  // once per game launch
+				RE::DebugMessageBox(ihng::Forms::Get().WorldOverrideWarning().c_str());
+			}
 			ihng::Manager::GetSingleton().QueueTask([] { ihng::Manager::GetSingleton().OnPostLoad(); });
 			break;
 		default:

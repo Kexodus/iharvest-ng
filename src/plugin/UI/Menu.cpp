@@ -109,6 +109,9 @@ namespace ihng::ui
 		{
 			const auto s = Manager::GetSingleton().GetStats();
 			ImGui::Text("%s %s - %s", version::kName.data(), version::kString.data(), Forms::IsReady() ? "ready" : "PLUGIN NOT ACTIVE (enable IHarvestNG.esp)");
+			if (const auto& warning = Forms::Get().WorldOverrideWarning(); !warning.empty()) {
+				ImGui::TextWrapped("WARNING: %s", warning.c_str());
+			}
 			ImGui::Separator();
 			ImGui::Text("Wisps in flight: %u", s.activeWisps);
 			ImGui::Text("Casters harvesting: %u", s.activeCasters);

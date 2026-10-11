@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.5 (2026-10-10)
+
+- **New: warns when an old IHarvest plugin breaks the world map.** The 1.0.0 `IHarvestNG.esp` (and the
+  original IHarvest.esl and its forks) carry a copy of the Tamriel worldspace record that reverts world
+  map mods. If one of them is still installed (for example the old `IHarvestNG-1.0.0` mod left in MO2
+  next to the new `IHarvest NG` mod, and winning the file conflict), IHarvest NG now names it in a
+  message box on load, in the log and on its Menu Framework page. Remove the old mod to fix the map.
+
 ## 1.0.4 (2026-10-10)
 
 - **Fix: Spell Tomes and Staves of Harvest never appeared (1.0.1 to 1.0.3).** The placement table

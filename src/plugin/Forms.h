@@ -29,7 +29,13 @@ namespace ihng
 		// Returns false (and logs) when the plugin is missing or a record could not be found.
 		bool Resolve();
 
+		// Finds IHarvest-family plugins that override the Tamriel worldspace (the 1.0.0 IHarvestNG.esp,
+		// the original IHarvest.esl / its forks) - that override reverts world map mods. Empty = none.
+		void CheckWorldOverrides();
+		[[nodiscard]] const std::string& WorldOverrideWarning() const noexcept { return _worldOverrideWarning; }
+
 	private:
-		bool _ready{ false };
+		bool        _ready{ false };
+		std::string _worldOverrideWarning;
 	};
 }

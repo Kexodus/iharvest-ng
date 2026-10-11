@@ -42,7 +42,7 @@ IHarvest NG
 
 ## 3. Version
 ```text
-1.0.4
+1.0.5
 ```
 
 ## 4. Category
@@ -214,7 +214,7 @@ Documents/My Games/Skyrim Special Edition/SKSE/IHarvestNG.log. Set the log level
 
 ## 8. Files tab: main file
 
-**Upload:** [IHarvest.NG.zip](https://github.com/Kexodus/iharvest-ng/releases/download/v1.0.4/IHarvest.NG.zip) (GitHub shows the space as a dot; rename it to `IHarvest NG.zip` if you like). Category: *Main Files*.
+**Upload:** [IHarvest.NG.zip](https://github.com/Kexodus/iharvest-ng/releases/download/v1.0.5/IHarvest.NG.zip) (GitHub shows the space as a dot; rename it to `IHarvest NG.zip` if you like). Category: *Main Files*.
 
 File name:
 ```text
@@ -222,7 +222,7 @@ IHarvest NG
 ```
 File version:
 ```text
-1.0.4
+1.0.5
 ```
 File description:
 ```text
@@ -239,6 +239,10 @@ Add these as requirements (search by name or ID):
 | SKSE Menu Framework | 120352 | `Optional - in-game settings page (INI otherwise)` |
 
 ## 10. Changelog tab
+Version `1.0.5`:
+```text
+World map broken? IHarvest NG now detects an old IHarvest plugin (the 1.0.0 IHarvestNG.esp, or the original IHarvest / a fork) that still overrides the Tamriel worldspace, and names it in a message box on load. Remove that old mod to fix the map.
+```
 Version `1.0.4`:
 ```text
 Fixed Spell Tomes / Staves of Harvest never appearing: all 22 placements were rejected at startup. Existing saves get every tome and staff the next time you enter its cell.

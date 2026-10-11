@@ -1,5 +1,8 @@
 #include "Forms.h"
 
+#include <cctype>
+#include <format>
+
 namespace ihng
 {
 	Forms& Forms::Get() noexcept
@@ -60,5 +63,37 @@ namespace ihng
 		_ready = ok;
 		logger::info("Forms: {} from {}", ok ? "all records resolved" : "MISSING RECORDS", pluginName);
 		return ok;
+	}
+
+	void Forms::CheckWorldOverrides()
+	{
+		_worldOverrideWarning.clear();
+		const auto* tamriel = RE::TESForm::LookupByID<RE::TESWorldSpace>(0x0000003C);
+		const auto* files = tamriel ? tamriel->sourceFiles.array : nullptr;
+		if (!files) {
+			return;
+		}
+		std::string offenders;
+		for (const auto* file : *files) {
+			if (!file) {
+				continue;
+			}
+			std::string name{ file->GetFilename() };
+			std::string lower = name;
+			std::ranges::transform(lower, lower.begin(), [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+			if (lower.find("iharvest") != std::string::npos) {
+				offenders += offenders.empty() ? name : ", " + name;
+			}
+		}
+		if (offenders.empty()) {
+			logger::info("Forms: no IHarvest plugin overrides the Tamriel worldspace");
+			return;
+		}
+		_worldOverrideWarning = std::format(
+			"IHarvest NG: {} overrides the Tamriel worldspace, which breaks the world map. "
+			"IHarvestNG.esp 1.0.1+ never does - this is an old copy (1.0.0, or the original IHarvest / a fork). "
+			"In MO2, remove or disable the old mod so only the current IHarvest NG provides IHarvestNG.esp.",
+			offenders);
+		logger::error("{}", _worldOverrideWarning);
 	}
 }
