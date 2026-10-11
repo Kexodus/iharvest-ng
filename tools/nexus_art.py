@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """nexus_art.py - render the Nexus page art for IHarvest NG in a minimal, Nordic-UI style.
 
-Flat near-black panels, 1 px bone-white rules, notched frames, diamond ornaments and widely tracked
-uppercase type. Everything is drawn at 2x and downsampled for clean thin lines.
+Flat near-black panels, 1 px bone-white rules and widely tracked uppercase type - the name, a rule and
+nothing else (no feature badges or version lists). Drawn at 2x and downsampled for clean thin lines.
 
 Needs Pillow + NumPy (dev-only; not part of the mod):  python -m pip install pillow numpy
     python tools/nexus_art.py [-o docs/nexus/images]
@@ -23,7 +23,7 @@ ROOT = Path(__file__).resolve().parents[1]
 FONTS = ROOT / "tools/fonts"
 SS = 2  # supersampling factor
 # Bumped whenever the art style changes: new file names defeat GitHub/browser image caches.
-TAG = "nordic"
+TAG = "min"
 
 BG_CENTER = (24, 24, 23)
 BG_EDGE = (10, 10, 10)
@@ -66,24 +66,17 @@ class Canvas:
 		pts = [(self.s(cx), self.s(cy - r)), (self.s(cx + r), self.s(cy)), (self.s(cx), self.s(cy + r)), (self.s(cx - r), self.s(cy))]
 		self.d.polygon(pts, outline=color, fill=fill, width=SS)
 
-	def rule(self, cx, cy, half, gap=14, color=INK_DIM):
-		"""Nordic UI divider: thin line, gold diamond in the middle, tiny diamonds at the ends."""
+	def rule(self, cx, cy, half, gap=12, color=INK_FAINT):
+		"""Divider: a thin line broken by one small gold diamond."""
 		self.line(cx - half, cy, cx - gap, cy, color)
 		self.line(cx + gap, cy, cx + half, cy, color)
-		self.diamond(cx, cy, 6, GOLD)
-		self.diamond(cx, cy, 2.2, GOLD, fill=GOLD)
-		for sgn in (-1, 1):
-			self.diamond(cx + sgn * half, cy, 2.5, color, fill=color)
+		self.diamond(cx, cy, 4, GOLD)
 
-	def frame(self, x0, y0, x1, y1, notch=14, inset=7):
-		"""Double thin frame with chamfered corners and gold corner studs."""
-		for k, col in ((0, INK_FAINT), (inset, (62, 60, 57))):
-			a, b, c, e = x0 + k, y0 + k, x1 - k, y1 - k
-			n = notch - k * 0.6
-			pts = [(a + n, b), (c - n, b), (c, b + n), (c, e - n), (c - n, e), (a + n, e), (a, e - n), (a, b + n), (a + n, b)]
-			self.d.line([(self.s(x), self.s(y)) for x, y in pts], fill=col, width=SS)
-		for x, y in ((x0, y0), (x1, y0), (x0, y1), (x1, y1)):
-			self.diamond(x + (notch * 0.45 if x == x0 else -notch * 0.45), y + (notch * 0.45 if y == y0 else -notch * 0.45), 2.2, GOLD, fill=GOLD)
+	def frame(self, x0, y0, x1, y1, notch=12):
+		"""Single thin frame with chamfered corners."""
+		n = notch
+		pts = [(x0 + n, y0), (x1 - n, y0), (x1, y0 + n), (x1, y1 - n), (x1 - n, y1), (x0 + n, y1), (x0, y1 - n), (x0, y0 + n), (x0 + n, y0)]
+		self.d.line([(self.s(x), self.s(y)) for x, y in pts], fill=(52, 50, 48), width=SS)
 
 	def text(self, x, y, s, f, color=INK, tracking=0.0, anchor="mm"):
 		"""Text with letter spacing (tracking in em). anchor: 'mm' centre or 'lm' left-middle."""
@@ -105,44 +98,37 @@ class Canvas:
 		out.quantize(colors=256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.FLOYDSTEINBERG).save(path, optimize=True)
 
 
-def title_block(c: Canvas, cy: float, title_size: int, sub_size: int, rule_half: float):
+def title_block(c: Canvas, cy: float, title_size: int, rule_half: float):
 	cx = c.w / 2
 	c.text(cx, cy, "IHARVEST NG", font("Cinzel", title_size, "Regular"), INK, tracking=0.16)
-	ry = cy + title_size * 0.80
-	c.rule(cx, ry, rule_half)
-	c.text(cx, ry + sub_size * 2.0, "NATIVE SKSE   ·   SE   ·   AE   ·   VR", font("Jost", sub_size, "Regular"), INK_DIM, tracking=0.32)
+	c.rule(cx, cy + title_size * 0.85, rule_half)
 
 
 def banner(out: Path):
 	c = Canvas(1920, 480, seed=3)
 	c.frame(40, 40, 1880, 440)
-	title_block(c, 200, 104, 22, 300)
+	title_block(c, 222, 104, 240)
 	c.save(out / f"banner-{TAG}.png")
 
 
 def thumbnail(out: Path):
 	c = Canvas(1280, 720, seed=5)
 	c.frame(36, 36, 1244, 684)
-	title_block(c, 316, 96, 22, 270)
-	c.text(c.w / 2, 560, "WISPS THAT HARVEST EVERY INGREDIENT AROUND YOU", font("Jost", 15, "Light"), INK_FAINT, tracking=0.30)
+	title_block(c, 340, 96, 220)
 	c.save(out / f"thumbnail-{TAG}.png")
 
 
 ROWS = [
-	("LOGIC", "Papyrus: 8 quests, 8 finder threads", "Native C++ in the game loop"),
-	("WISPS", "AI actors and 64 pathing markers", "Lightweight refs, curved native flight"),
-	("FINDING FLORA", "Story Manager / SkyPal, ~3 s timeouts", "Native scan of loaded cells"),
-	("HARVESTING", "Needs Vanilla Fixes / USSEP patches", "Harvests as you, no patches"),
-	("SAVE FOOTPRINT", "Quests, actors, stuck-thread risk", "No quests, actors or scripts"),
-	("CONFLICTS", "Overrides 4 worldspaces and 19 cells", "Zero vanilla records touched"),
-	("VR", "Rename .esl to .esp by hand", "Same DLL, ESL-flagged .esp"),
-	("SETTINGS", "SkyUI MCM", "SKSE Menu Framework + INI"),
+	("Papyrus scripts and quests", "No scripts"),
+	("Needs patches", "No patches"),
+	("Edits vanilla cells", "Edits nothing"),
+	("MCM", "SKSE Menu Framework"),
 ]
 
 
 def compare(out: Path):
-	w, top, row_h = 1600, 236, 72
-	h = top + 46 + len(ROWS) * row_h + 70
+	w, top, row_h = 1600, 230, 84
+	h = top + len(ROWS) * row_h + 90
 	c = Canvas(w, h, seed=9)
 	c.frame(30, 30, w - 30, h - 30)
 	tf = font("Cinzel", 44, "Regular")
@@ -154,26 +140,17 @@ def compare(out: Path):
 	ax0, ax1 = start + lw + 30, start + lw + gap - 30
 	c.line(ax0, 98, ax1, 98, GOLD)
 	c.diamond(ax1, 98, 4, GOLD, fill=GOLD)
-	c.rule(w / 2, 152, 330)
+	c.rule(w / 2, 152, 300)
 
-	x0, x1, x2, x3 = 90, 430, 1010, w - 90
-	head = font("Jost", 17, "Medium")
-	c.text(x1, top, "ORIGINAL IHARVEST", head, INK_DIM, tracking=0.25, anchor="lm")
-	c.text(x2, top, "IHARVEST NG", head, GOLD, tracking=0.25, anchor="lm")
-	c.line(x0, top + 26, x3, top + 26, INK_FAINT)
-
-	key = font("Jost", 16, "Medium")
-	body = font("Jost", 23, "Light")
-	for i, (k, a, b) in enumerate(ROWS):
-		y = top + 46 + row_h / 2 + i * row_h
-		if i % 2 == 0:
-			c.d.rectangle([c.s(x0), c.s(y - row_h / 2 + 4), c.s(x3), c.s(y + row_h / 2 - 4)], fill=PANEL_ALT + (255,))
-		c.text(x0 + 22, y, k, key, INK_DIM, tracking=0.22, anchor="lm")
-		c.text(x1, y, a, body, INK_BODY, anchor="lm")
-		c.diamond(x2 - 18, y, 3.2, GOLD, fill=GOLD)
-		c.text(x2, y, b, body, INK, anchor="lm")
-	end = top + 46 + len(ROWS) * row_h + 4
-	c.line(x0, end, x3, end, INK_FAINT)
+	# Two columns, centred on the title's halves; thin separators only.
+	xl, xr, x0, x3 = start + lw / 2, start + lw + gap + rw / 2, 260, w - 260
+	body = font("Jost", 26, "Light")
+	for i, (a, b) in enumerate(ROWS):
+		y = top + row_h / 2 + i * row_h
+		c.text(xl, y, a, body, INK_DIM)
+		c.text(xr, y, b, body, INK)
+		if i < len(ROWS) - 1:
+			c.line(x0, y + row_h / 2, x3, y + row_h / 2, (40, 39, 37))
 	c.save(out / f"comparison-{TAG}.png")
 
 
@@ -188,11 +165,9 @@ def section_headers(out: Path):
 		label = name.upper()
 		tw = c.text_width(label, f, tracking=0.22)
 		c.text(w / 2, h / 2 - 2, label, f, INK, tracking=0.22)
-		gap = tw / 2 + 34
+		gap = tw / 2 + 32
 		for sgn in (-1, 1):
-			c.line(w / 2 + sgn * gap, h / 2, w / 2 + sgn * 470, h / 2, INK_FAINT)
-			c.diamond(w / 2 + sgn * (gap - 14), h / 2, 4.5, GOLD)
-			c.diamond(w / 2 + sgn * 470, h / 2, 2.4, INK_FAINT, fill=INK_FAINT)
+			c.line(w / 2 + sgn * gap, h / 2, w / 2 + sgn * 420, h / 2, INK_FAINT)
 		c.save(out / f"section_{name.lower().replace(' ', '_')}-{TAG}.png")
 
 
