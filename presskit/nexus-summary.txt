@@ -1,0 +1,1 @@
+Native SKSE remake of IHarvest: cast Harvest and wisps pick every ingredient around you. Same spell, tomes and staff, but no Papyrus, no quests, zero vanilla overrides. Works with modded flora. One DLL for SE, AE and VR.

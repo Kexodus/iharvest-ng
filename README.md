@@ -106,6 +106,7 @@ python -I tools/package.py   # release zip in release/
   Run it with `python -I tools/build_plugin.py path/to/IHarvest.esl`.
 * Optional: set `IHNG_DEPLOY_DIR` (environment variable or `-DIHNG_DEPLOY_DIR=...`) to a mod folder,
   such as your MO2 `mods/IHarvest NG`, and every build is copied there.
+* `presskit/` holds the Nexus page art, icon and copy-paste text (see [`presskit/README.md`](presskit/README.md)).
 
 ## Credits & license
 

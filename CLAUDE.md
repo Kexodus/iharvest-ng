@@ -12,6 +12,7 @@ IDontEvenKnow; source at github.com/EyeDeck/IHarvest). Goal: behave like the ori
 | `src/plugin/` | SKSE plugin. `Manager` = per-frame orchestrator (sessions, wisps, claims, staff, tomes); `Wisp` = one temp `IHNG_Wisp` ACTI ref; `Harvestable` = classification/availability/harvest (reads vanilla script props from the Papyrus VM); `Hooks` = Main::Update call hook; `Events` = sinks that only enqueue; `UI/Menu` = SKSE Menu Framework page |
 | `tools/build_plugin.py` | Regenerates `dist/Data/IHarvestNG.esp` from the original `IHarvest.esl` (keeps spell/tome/staff/art/sound + placed tomes/staves, strips every VMAD, adds `IHNG_Wisp`/`IHNG_WispSilent` ACTI + loop SOUN) |
 | `tools/package.py` | Release zip |
+| `presskit/` | Nexus page kit (CMC layout): `nexus-description.bbcode.txt`, `nexus-summary.txt`, `nexus/` images, `logo/` icon, `src/` generators (`logo.py` then `build.py`) |
 | `dist/Data/` | Shipped data (plugin, original meshes/textures/sounds, default INI) |
 
 ## Rules
