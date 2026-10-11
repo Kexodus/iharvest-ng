@@ -22,6 +22,7 @@ Upload these on the Nexus **Images** tab. Make the primary image the mod's **Pri
 | [`ihng-primary-1920x1080.png`](nexus/ihng-primary-1920x1080.png) | 1920×1080 | Primary image / thumbnail |
 | [`ihng-gallery-comparison-1920x1080.png`](nexus/ihng-gallery-comparison-1920x1080.png) | 1920×1080 | Gallery: original IHarvest vs NG |
 | [`ihng-header-1920x480.png`](nexus/ihng-header-1920x480.png) | 1920×480 | Description banner / page header |
+| [`ihng-icon-minimal-1024.png`](logo/ihng-icon-minimal-1024.png) | 1024×1024 | Optional gallery image: the icon on its own |
 
 <p>
   <img src="nexus/ihng-primary-1920x1080.png" width="49%">

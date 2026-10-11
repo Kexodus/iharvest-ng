@@ -35,7 +35,7 @@ The IHarvest you know, rebuilt as a native SKSE plugin.[/center]
 [list]
 [*][b]Harvest[/b] is a free Alteration concentration spell. Each wisp it sends costs [b]8 Magicka[/b], reduced by Alteration cost reduction (never below 15%).
 [*]The first wisp leaves instantly. After that the cast speeds up towards a limit set by your [b]Alteration[/b] and [b]Alchemy[/b]: 500 ms with no skill, about 330 ms at 100/100.
-[*]The search radius also grows with your skills, from 1,500 to 4,000 units.
+[*]The search radius also grows with your skills, from 1,500 to 4,000 units. The [i]Search radius[/i] setting scales it, up to 10,000 units: as far as a wisp can fly.
 [*][b]Dual casting[/b] gives 1.5× radius and a faster ramp-up. [b]NG extra:[/b] with the [b]Alteration Dual Casting[/b] perk, every refire sends [b]two wisps[/b].
 [*]Magicka is only spent when a wisp actually goes out. If nothing is in range, the cast simply checks again less often.
 [*]Each wisp grants Alteration XP.
