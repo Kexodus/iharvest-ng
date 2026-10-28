@@ -292,7 +292,7 @@ def build(src: Path) -> tuple[bytes, list[str]]:
 			groups.append(Group(label.encode("latin1"), 0, 0, 0, tops[label]))
 	n = count(groups)
 	header_subs = [
-		("HEDR", struct.pack("<fII", 1.71, n, 0xFFF)),
+		("HEDR", struct.pack("<fII", 1.70, n, 0xFFF)),  # 1.70, not 1.71: unmodded Skyrim VR refuses to load 1.71 plugins
 		("CNAM", zstr("IHarvest NG contributors (original by IDontEvenKnow)")),
 		("SNAM", zstr("IHarvest NG - native SKSE reimplementation of IHarvest. Data only: no scripts, no quests. "
 		              "Requires IHarvestNG.dll (SKSE).")),

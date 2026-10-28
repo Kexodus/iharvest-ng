@@ -94,25 +94,6 @@ namespace ihng
 		}
 	}
 
-	RE::ActiveEffect* Manager::FindActiveEffect(RE::Actor* a_actor, RE::EffectSetting* a_effect)
-	{
-		if (!a_actor || !a_effect) {
-			return nullptr;
-		}
-		auto* target = a_actor->AsMagicTarget();
-		auto* list = target ? target->GetActiveEffectList() : nullptr;
-		if (!list) {
-			return nullptr;
-		}
-		for (auto* effect : *list) {
-			if (effect && effect->GetBaseObject() == a_effect &&
-				effect->flags.none(RE::ActiveEffect::Flag::kInactive, RE::ActiveEffect::Flag::kDispelled)) {
-				return effect;
-			}
-		}
-		return nullptr;
-	}
-
 	void Manager::ApplyConfigChanges()
 	{
 		auto& settings = Settings::GetSingleton();
@@ -187,25 +168,25 @@ namespace ihng
 
 	// ---- Sessions ---------------------------------------------------------------------------------
 
-	void Manager::SyncSession(RE::Actor* a_actor, bool a_staff, RE::ActiveEffect* a_effect)
+	void Manager::SyncSession(RE::Actor* a_actor, bool a_staff, ActiveEffectState a_effect)
 	{
 		const auto handle = a_actor->GetHandle();
 		const auto exhausted = std::ranges::find_if(_exhausted, [&](const auto& e) { return e.first == handle && e.second == a_staff; });
 		if (exhausted != _exhausted.end()) {
-			if (a_effect) {
+			if (a_effect.active) {
 				return;  // ran out of magicka/charge: wait for this effect to end before starting again
 			}
 			_exhausted.erase(exhausted);
 		}
 		auto it = std::ranges::find_if(_sessions, [&](const Session& s) { return s.alive && s.staff == a_staff && s.caster == handle; });
-		if (a_effect && it == _sessions.end()) {
-			StartSession(a_actor, a_staff, a_effect);
-		} else if (!a_effect && it != _sessions.end()) {
+		if (a_effect.active && it == _sessions.end()) {
+			StartSession(a_actor, a_staff, a_effect.dual);
+		} else if (!a_effect.active && it != _sessions.end()) {
 			it->alive = false;
 		}
 	}
 
-	void Manager::StartSession(RE::Actor* a_actor, bool a_staff, RE::ActiveEffect* a_effect)
+	void Manager::StartSession(RE::Actor* a_actor, bool a_staff, bool a_dual)
 	{
 		auto* av = a_actor->AsActorValueOwner();
 		const auto alteration = static_cast<std::int32_t>(av->GetActorValue(RE::ActorValue::kAlteration));
@@ -213,7 +194,7 @@ namespace ihng
 
 		bool dual = false;
 		if (!a_staff) {
-			dual = a_effect->flags.any(RE::ActiveEffect::Flag::kDual);
+			dual = a_dual;
 			bool graphDual = false;
 			if (!dual && a_actor->GetGraphVariableBool("IsCastingDual", graphDual)) {
 				dual = graphDual;
@@ -247,8 +228,9 @@ namespace ihng
 	{
 		const auto& forms = Forms::Get();
 		auto        check = [&](RE::Actor* a_actor) {
-            SyncSession(a_actor, false, FindActiveEffect(a_actor, forms.harvestEffect));
-            SyncSession(a_actor, true, FindActiveEffect(a_actor, forms.harvestStaffEffect));
+			using Result = RE::BSContainer::ForEachResult;
+			SyncSession(a_actor, false, ReadActiveEffect<Result>(a_actor, forms.harvestSpell, forms.harvestEffect));
+			SyncSession(a_actor, true, ReadActiveEffect<Result>(a_actor, forms.harvestStaffAbility, forms.harvestStaffEffect));
 		};
 
 		check(RE::PlayerCharacter::GetSingleton());
@@ -495,7 +477,7 @@ namespace ihng
 		if (!a_caster || !forms.harvestStaffAbility) {
 			return;
 		}
-		if (FindActiveEffect(a_caster, forms.harvestStaffEffect)) {
+		if (ReadActiveEffect<RE::BSContainer::ForEachResult>(a_caster, forms.harvestStaffAbility, forms.harvestStaffEffect).active) {
 			a_caster->RemoveSpell(forms.harvestStaffAbility);
 		} else {
 			a_caster->RemoveSpell(forms.harvestStaffAbility);

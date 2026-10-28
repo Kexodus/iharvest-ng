@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ActiveEffects.h"
 #include "Harvestable.h"
 #include "Settings.h"
 #include "Wisp.h"
@@ -81,8 +82,8 @@ namespace ihng
 		void RunQueuedTasks();
 		void UpdateSessions(float a_dt);
 		void UpdateWisps(float a_dt);
-		void SyncSession(RE::Actor* a_actor, bool a_staff, RE::ActiveEffect* a_effect);
-		void StartSession(RE::Actor* a_actor, bool a_staff, RE::ActiveEffect* a_effect);
+		void SyncSession(RE::Actor* a_actor, bool a_staff, ActiveEffectState a_effect);
+		void StartSession(RE::Actor* a_actor, bool a_staff, bool a_dual);
 		core::AttemptResult Attempt(Session& a_session, RE::Actor* a_caster);
 		core::AttemptResult DispatchOne(Session& a_session, RE::Actor* a_caster, std::uint32_t a_index);
 		RE::TESObjectREFR*  NextTarget(Session& a_session, RE::Actor* a_caster, harvest::Kind& a_kindOut);
@@ -94,9 +95,6 @@ namespace ihng
 		void                PlaceInAttachedCells();
 		void                UpdatePendingKeyframes(float a_dt);
 		void                ApplyConfigChanges();
-
-		// Active effect on a_actor whose base is a_effect (not dispelled, conditions true), or nullptr.
-		static RE::ActiveEffect* FindActiveEffect(RE::Actor* a_actor, RE::EffectSetting* a_effect);
 
 		std::mutex                         _queueLock;
 		std::vector<std::function<void()>> _tasks;

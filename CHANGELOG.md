@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.0.0 (2026-10-28)
+
+- **Fix: Harvest did nothing in Skyrim VR.** The spell animated, but no wisps went out. The plugin found
+  the Harvest effect by reading the actor's active-effect list, which CommonLibSSE-NG returns as null on
+  VR. It now walks active effects with the engine's own visitor on every runtime (`ActiveEffects.h`),
+  matching the Harvest base effect, spell and caster. Tested in Skyrim VR 1.4.15 with SKSEVR 2.00.12.
+- **Fix: `IHarvestNG.esp` did not load on unmodded Skyrim VR**, so the spell, tomes and staff were
+  missing. The plugin header version is now 1.70 instead of 1.71, which VR rejects. It is still
+  ESL-flagged and no record changed, so existing saves are unaffected.
+
 ## 1.0.8 (2026-10-11)
 
 - **Fix: disabled itself on Skyrim AE 1.7.99 / 1.7.104** ("Main::Update call site ... is not a CALL").

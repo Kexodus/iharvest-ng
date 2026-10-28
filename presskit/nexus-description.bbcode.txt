@@ -109,7 +109,7 @@ No Menu Framework? Every option is in [i]Data/SKSE/Plugins/IHarvestNG.ini[/i], w
 [*][b]Flora overhauls and new ingredient mods[/b] work automatically.
 [*][b]Perk overhauls[/b] (Adamant, Ordinator and others): their Green Thumb ranks apply, because wisps harvest as you.
 [*][b]Not compatible with the original IHarvest[/b] or its Redux/Improved versions. Use one or the other.
-[*][b]VR:[/b] the DLL supports VR, and every engine address it uses is verified against the VR Address Library. Feedback from VR players is very welcome.
+[*][b]VR:[/b] the DLL supports VR, and every engine address it uses is verified against the VR Address Library. Tested in Skyrim VR 1.4.15 with SKSEVR 2.00.12. VR needs 2.0.0 or later: older versions cast but sent no wisps.
 [/list]
 
 [center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/presskit/nexus/section-07-faq.png[/img][/center]
@@ -123,6 +123,12 @@ No Menu Framework? Every option is in [i]Data/SKSE/Plugins/IHarvestNG.ini[/i], w
 [/list]
 
 [center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/presskit/nexus/section-09-changelog.png[/img][/center]
+
+[b]2.0.0[/b]
+[list]
+[*][b]Harvest works in Skyrim VR.[/b] The spell animated but no wisps went out, because VR stores active spell effects differently. Tested in Skyrim VR 1.4.15.
+[*]IHarvestNG.esp loads on unmodded Skyrim VR (plugin header 1.70, still ESL-flagged).
+[/list]
 
 [b]1.0.8[/b]
 [list]
