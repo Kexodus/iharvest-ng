@@ -109,7 +109,7 @@ IHarvest NG
 
 ### Version
 ```text
-2.0.0
+2.0.1
 ```
 
 ### Category
@@ -124,7 +124,7 @@ Kexodus
 
 ### Files tab: main file
 
-**Upload:** [IHarvest.NG.zip](https://github.com/Kexodus/iharvest-ng/releases/download/v2.0.0/IHarvest.NG.zip) (GitHub shows the space as a dot; rename it to `IHarvest NG.zip` if you like). Category: *Main Files*.
+**Upload:** [IHarvest.NG.zip](https://github.com/Kexodus/iharvest-ng/releases/download/v2.0.1/IHarvest.NG.zip) (GitHub shows the space as a dot; rename it to `IHarvest NG.zip` if you like). Category: *Main Files*.
 
 File name:
 ```text
@@ -132,7 +132,7 @@ IHarvest NG
 ```
 File version:
 ```text
-2.0.0
+2.0.1
 ```
 File description:
 ```text
@@ -149,6 +149,10 @@ Add these as requirements (search by name or ID):
 | SKSE Menu Framework | 120352 | `Optional - in-game settings page (INI otherwise)` |
 
 ### Changelog tab
+Version `2.0.1`:
+```text
+Planter crops added by other plugins are harvested: Skyrim Anniversary - Growable Plants, Creation Club planter crops (e.g. Goblins mushrooms) and the AE Aloe Vera. Only Hearthfire's own crops were recognized before. No patch needed; safe to update mid-playthrough.
+```
 Version `2.0.0`:
 ```text
 Harvest now works in Skyrim VR (the spell animated but sent no wisps). IHarvestNG.esp now loads on unmodded Skyrim VR (plugin header 1.70, still ESL-flagged). No change on SE/AE; safe to update mid-playthrough.

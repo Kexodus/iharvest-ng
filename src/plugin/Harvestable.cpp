@@ -85,9 +85,18 @@ namespace ihng::harvest
 			return var->Unpack<RE::TESForm*>();
 		}
 
-		bool IsFromHearthfire(const RE::TESForm* a_form)
+		// A planter's hidden produce token (BYOHHiddenObjectScript: turns into the real ingredient or
+		// food when it lands in an inventory). Not only HearthFires.esm makes these: the Creation Club
+		// (e.g. ccbgssse040), the AE _ResourcePack.esl and planter mods such as "Skyrim Anniversary -
+		// Growable Plants" ship their own copies. Script attachments of base forms can't be read
+		// reliably, but every such token is a Non-Playable MISC (never shown in an inventory), and no
+		// other flora produce is - checked against the vanilla/CC masters and a large mod list.
+		bool IsHiddenPlanterProduce(const RE::TESForm* a_form)
 		{
-			const auto* file = a_form ? a_form->GetFile(0) : nullptr;
+			if (a_form->formFlags & RE::TESObjectMISC::RecordFlags::kNonPlayable) {
+				return true;
+			}
+			const auto* file = a_form->GetFile(0);
 			return file && _stricmp(file->GetFilename().data(), "HearthFires.esm") == 0;
 		}
 
@@ -107,7 +116,7 @@ namespace ihng::harvest
 				// Hearthfire planters yield hidden "BYOHHouseIngredient*" misc items whose script turns
 				// them into the real ingredient when they land in an inventory. Because NG harvests as
 				// the caster, that conversion simply happens - no vanilla script patches needed.
-				return a_rules.hearthfire && IsFromHearthfire(a_form);
+				return a_rules.hearthfire && IsHiddenPlanterProduce(a_form);
 			case RE::FormType::LeveledItem:
 				{
 					auto* list = static_cast<RE::TESLevItem*>(a_form);

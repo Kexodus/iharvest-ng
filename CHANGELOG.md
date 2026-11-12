@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.0.1 (2026-11-12)
+
+- **Fix: crops in planters from other plugins were never harvested.** Planter crops yield a hidden
+  "produce token" item that turns into the real ingredient in your inventory. Only tokens from
+  `HearthFires.esm` were recognized, so planter crops added by Creation Club content (e.g. the Goblins
+  creation's mushrooms), the AE `_ResourcePack.esl` (Aloe Vera) and planter mods such as *Skyrim
+  Anniversary - Growable Plants* were skipped. Any Non-Playable misc item produced by flora now counts
+  (still controlled by the "Hearthfire planters" option). No patch is needed.
+
 ## 2.0.0 (2026-10-28)
 
 - **Fix: Harvest did nothing in Skyrim VR.** The spell animated, but no wisps went out. The plugin found

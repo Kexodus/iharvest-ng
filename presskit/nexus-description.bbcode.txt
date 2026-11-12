@@ -124,6 +124,11 @@ No Menu Framework? Every option is in [i]Data/SKSE/Plugins/IHarvestNG.ini[/i], w
 
 [center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/presskit/nexus/section-09-changelog.png[/img][/center]
 
+[b]2.0.1[/b]
+[list]
+[*][b]Planter crops from other mods are harvested.[/b] Skyrim Anniversary - Growable Plants, Creation Club planter crops (such as the Goblins mushrooms) and the AE Aloe Vera were skipped: only Hearthfire's own crops were recognized. No patch needed.
+[/list]
+
 [b]2.0.0[/b]
 [list]
 [*][b]Harvest works in Skyrim VR.[/b] The spell animated but no wisps went out, because VR stores active spell effects differently. Tested in Skyrim VR 1.4.15.
