@@ -124,6 +124,11 @@ No Menu Framework? Every option is in [i]Data/SKSE/Plugins/IHarvestNG.ini[/i], w
 
 [center][img]https://raw.githubusercontent.com/Kexodus/iharvest-ng/main/presskit/nexus/section-09-changelog.png[/img][/center]
 
+[b]2.1.0[/b]
+[list]
+[*][b]Translatable.[/b] All text the DLL shows (the Menu Framework page and warnings) now comes from [font=Courier New]Data/Interface/Translations/IHarvestNG_<LANGUAGE>.txt[/font], picked by your game language, with English as the fallback. Copy [font=Courier New]IHarvestNG_ENGLISH.txt[/font], translate the text after each tab, and save as UTF-16 LE. Chinese and other non-Latin scripts need the matching font enabled in [font=Courier New]SKSEMenuFramework.ini[/font].
+[/list]
+
 [b]2.0.1[/b]
 [list]
 [*][b]Planter crops from other mods are harvested.[/b] Skyrim Anniversary - Growable Plants, Creation Club planter crops (such as the Goblins mushrooms) and the AE Aloe Vera were skipped: only Hearthfire's own crops were recognized. No patch needed.

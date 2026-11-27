@@ -5,6 +5,8 @@ file(GLOB_RECURSE IHNG_TEST_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DI
 
 add_executable(ihng_tests ${IHNG_TEST_SOURCES})
 target_link_libraries(ihng_tests PRIVATE ihng::core Catch2::Catch2WithMain)
+# Lets TextTests check the shipped translation template against the built-in table.
+target_compile_definitions(ihng_tests PRIVATE IHNG_SOURCE_DIR="${PROJECT_SOURCE_DIR}")
 if(MSVC)
 	target_compile_options(ihng_tests PRIVATE /W4 /permissive- /utf-8)
 endif()

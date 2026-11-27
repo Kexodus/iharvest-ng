@@ -9,6 +9,7 @@
 #include "Placements.h"
 #include "Serialization.h"
 #include "Settings.h"
+#include "Text.h"
 #include "UI/Menu.h"
 
 #include <IHarvestNG/Version.h>
@@ -32,10 +33,11 @@ namespace
 	void OnSKSEMessage(SKSE::MessagingInterface::Message* a_msg)
 	{
 		switch (a_msg->type) {
-		case SKSE::MessagingInterface::kPostLoad:
-			ihng::ui::Register();
-			break;
 		case SKSE::MessagingInterface::kDataLoaded:
+			// Text first: the game language (sLanguage) is known by now, and the menu page names and the
+			// world-map warning below are built from it.
+			ihng::text::Load();
+			ihng::ui::Register();
 			ihng::Forms::Get().CheckWorldOverrides();
 			if (ihng::Forms::Get().Resolve()) {
 				ihng::placements::Resolve(ihng::Forms::Get().pluginName);

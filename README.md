@@ -87,6 +87,25 @@ Without Menu Framework, edit `Data/SKSE/Plugins/IHarvestNG.ini`, which is docume
 
 Log: `Documents/My Games/Skyrim Special Edition/SKSE/IHarvestNG.log`.
 
+## Translating
+
+Item, spell and tome names are in `IHarvestNG.esp`; translate them with your usual plugin tools
+(xTranslator, ESP-ESM Translator). Everything the DLL shows (the Menu Framework page and the
+old-plugin warning) comes from `Data/Interface/Translations/IHarvestNG_<LANGUAGE>.txt`:
+
+1. Copy `IHarvestNG_ENGLISH.txt` to `IHarvestNG_<LANGUAGE>.txt`, using your game's `sLanguage`
+   (for example `IHarvestNG_CHINESE.txt`). If that file is missing, the English file is used.
+2. Translate the text after the tab on each line. Keep the `$IHNG_...` key and the tab, and keep each
+   `{}`: the plugin puts a number or name there, in order.
+3. Save as **UTF-16 LE with BOM** (the standard for Skyrim translation files). UTF-8 also works
+   for IHarvest NG itself.
+
+A string missing from your file falls back to English, so a file made for an older version keeps
+working. The log line `Text: N of M strings from ...` shows how many were found.
+
+Chinese, Japanese, Korean, Cyrillic and other scripts need the matching font in SKSE Menu Framework:
+set, for example, `EnableChinese = true` under `[Fonts]` in `Data/SKSE/Plugins/SKSEMenuFramework.ini`.
+
 ## Building
 
 Requirements: Visual Studio 2022 (MSVC v143), CMake 3.25+, and vcpkg with `VCPKG_ROOT` set.
@@ -98,8 +117,10 @@ cmake --preset plugin && cmake --build --preset plugin-release
 python -I tools/package.py   # release zip in release/
 ```
 
-* `src/core` holds the engine-independent cast-timing and wisp-flight logic. It is unit-tested in
-  `tests/` (Catch2).
+* `src/core` holds the engine-independent cast-timing, wisp-flight and UI-text logic. It is
+  unit-tested in `tests/` (Catch2).
+* UI strings: add or change them in the table in `src/core/src/Text.cpp`, then run
+  `python -I tools/make_translation.py` to regenerate `IHarvestNG_ENGLISH.txt` (a test checks they match).
 * `src/plugin` is the SKSE plugin (CommonLibSSE-NG, multi-runtime).
 * `tools/build_plugin.py` regenerates `dist/Data/IHarvestNG.esp` from the original `IHarvest.esl`.
   It keeps the spell, tome, staff and sound records, strips every script, and adds the wisp activators.

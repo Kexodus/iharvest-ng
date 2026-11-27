@@ -50,6 +50,8 @@ set(IHNG_PLUGIN_SOURCES
 	Placements.h
 	Placements.cpp
 	Placements.inl
+	Text.h
+	Text.cpp
 	UI/Menu.h
 	UI/Menu.cpp
 )

@@ -1,5 +1,7 @@
 #include "Forms.h"
 
+#include "Text.h"
+
 #include <cctype>
 #include <format>
 
@@ -94,11 +96,10 @@ namespace ihng
 			logger::info("Forms: no IHarvest plugin overrides the Tamriel worldspace");
 			return;
 		}
-		_worldOverrideWarning = std::format(
-			"IHarvest NG: {} overrides the Tamriel worldspace, which breaks the world map. "
-			"IHarvestNG.esp 1.0.1+ never does - this is an old copy (1.0.0, or the original IHarvest / a fork). "
-			"In MO2, remove or disable the old mod so only the current IHarvest NG provides IHarvestNG.esp.",
-			offenders);
-		logger::error("{}", _worldOverrideWarning);
+		// Shown in the player's language; logged in English so bug reports stay readable.
+		_worldOverrideWarning = text::Format("$IHNG_WorldOverride", offenders);
+		const auto english = std::ranges::find(core::text::Defaults(), "$IHNG_WorldOverride"sv, &core::text::Entry::key)->english;
+		const std::string_view args[]{ offenders };
+		logger::error("{}", core::text::Substitute(english, args));
 	}
 }

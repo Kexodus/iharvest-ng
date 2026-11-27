@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.1.0 (2026-11-27)
+
+- **Translatable.** All text the DLL shows (the SKSE Menu Framework page and the old-plugin warning)
+  now comes from `Data/Interface/Translations/IHarvestNG_<LANGUAGE>.txt`, picked by the game's
+  `sLanguage`, with English as the fallback for missing files and missing lines. The shipped
+  `IHarvestNG_ENGLISH.txt` is the template; see "Translating" in the README. Values are inserted with
+  `{}`, so a mistranslated line can't crash the game. For Chinese and other non-Latin scripts, enable
+  the matching font in `SKSEMenuFramework.ini`.
+- The menu page is now registered once game data has loaded (the language isn't known earlier).
+
 ## 2.0.1 (2026-11-12)
 
 - **Fix: crops in planters from other plugins were never harvested.** Planter crops yield a hidden
